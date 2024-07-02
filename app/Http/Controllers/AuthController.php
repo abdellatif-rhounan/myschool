@@ -67,6 +67,8 @@ class AuthController extends Controller
         $user->name = trim($request->name);
         $user->email = trim($request->email);
         $user->password = Hash::make($request->password);
+        $user->user_type = 3;
+        $user->status = 1;
         $user->save();
 
         return to_route('login')->with('success', 'Account Created Successfuly');

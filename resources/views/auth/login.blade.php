@@ -50,7 +50,7 @@
 
 @section('links')
     <p class="mt-3 mb-1">
-        <a href="{{ route('resetPassword') }}">I forgot my password</a>
+        <a href="{{ route('forgotPassword') }}">I forgot my password</a>
     </p>
 
     <p class="mb-0">
