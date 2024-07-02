@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 
-@section('page_title', 'Reset Password')
+@section('title', 'Reset Password')
 
 @section('box_msg', 'You are only one step a way from your new password, recover your password now.')
 
@@ -40,6 +40,6 @@
 
 @section('links')
     <p class="mt-3 mb-0">
-        <a href="{{ url('login') }}">Login</a>
+        <a href="{{ route('login') }}">Login</a>
     </p>
 @endsection

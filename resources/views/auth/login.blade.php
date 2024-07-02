@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 
-@section('page_title', 'Login')
+@section('title', 'Login')
 
 @section('box_msg', 'Sign in to start your session')
 
@@ -50,10 +50,10 @@
 
 @section('links')
     <p class="mt-3 mb-1">
-        <a href="{{ url('forgot-password') }}">I forgot my password</a>
+        <a href="{{ route('resetPassword') }}">I forgot my password</a>
     </p>
 
     <p class="mb-0">
-        <a href="{{ url('register') }}" class="text-center">Sign Up</a>
+        <a href="{{ route('register') }}" class="text-center">Sign Up</a>
     </p>
 @endsection

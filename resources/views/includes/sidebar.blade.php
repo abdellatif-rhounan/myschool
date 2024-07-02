@@ -21,7 +21,36 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                 data-accordion="false">
-                @yield('sidebar_navlinks')
+
+                <li class="nav-item">
+                    <a href="{{ route('dashboard') }}" class="nav-link @if (request()->segment(1) == 'dashboard') active @endif">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+
+                @php
+                    $user_type = Auth::user()->user_type;
+                @endphp
+
+                @if ($user_type == 1)
+                    {{-- Admin --}}
+                    <li class="nav-item">
+                        <a href="{{ route('admins.index') }}"
+                            class="nav-link @if (request()->segment(1) == 'admins') active @endif">
+                            <i class="nav-icon fas fa-user-tie"></i>
+
+                            <p>Admins</p>
+                        </a>
+                    </li>
+                @elseif ($user_type == 2)
+                    {{-- Teacher --}}
+                @elseif ($user_type == 3)
+                    {{-- Student --}}
+                @elseif ($user_type == 4)
+                    {{-- Parent --}}
+                @endif
             </ul>
         </nav>
     </div>

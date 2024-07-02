@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 
-@section('page_title', 'Register')
+@section('title', 'Register')
 
 @section('box_msg', 'Register a new membership')
 
@@ -83,6 +83,6 @@
 
 @section('links')
     <p class="mt-4 mb-0">
-        <a href="{{ url('login') }}">Login</a>
+        <a href="{{ route('login') }}">Login</a>
     </p>
 @endsection

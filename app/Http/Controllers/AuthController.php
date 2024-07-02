@@ -15,7 +15,7 @@ class AuthController extends Controller
     public function login()
     {
         if (Auth::check()) {
-            return redirect('dashboard');
+            return to_route('dashboard');
         }
 
         return view('auth.login');
@@ -31,7 +31,7 @@ class AuthController extends Controller
         $remember = $request->remember ? true : false;
 
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $remember)) {
-            return redirect('dashboard');
+            return to_route('dashboard');
         } else {
             return redirect()->back()->with('error', 'Wrong Credentials');
         }
@@ -41,7 +41,7 @@ class AuthController extends Controller
     {
         Auth::logout();
 
-        return redirect('login');
+        return to_route('login');
     }
 
     public function register()
@@ -69,7 +69,7 @@ class AuthController extends Controller
         $user->password = Hash::make($request->password);
         $user->save();
 
-        return redirect('login')->with('success', 'Account Created Successfuly');
+        return to_route('login')->with('success', 'Account Created Successfuly');
     }
 
     public function forgotPassword()
@@ -98,7 +98,7 @@ class AuthController extends Controller
 
         Mail::to($request->email)->send(new ForgotPasswordMail($user));
 
-        return redirect('login')->with('success', 'Email sent Successfully');
+        return to_route('login')->with('success', 'Email sent Successfully');
     }
 
     public function resetPassword($token)
@@ -133,6 +133,6 @@ class AuthController extends Controller
         $user->remember_token = null;
         $user->save();
 
-        return redirect('login')->with('success', 'Password Reseted Successfully');
+        return to_route('login')->with('success', 'Password Reseted Successfully');
     }
 }

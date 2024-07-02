@@ -1,27 +1,31 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 
-// ****** Auth Routes ******
-Route::get('login', [AuthController::class, 'login']);
+// ******** Auth Routes ********
+Route::controller(AuthController::class)->group(function () {
+  Route::get('login', 'login')->name('login');
+  Route::post('login', 'authLogin');
 
-Route::post('login', [AuthController::class, 'authLogin']);
+  Route::get('logout', 'logout')->name('logout');
 
-Route::get('logout', [AuthController::class, 'logout']);
+  Route::get('register', 'register')->name('register');
+  Route::post('register', 'postRegister');
 
-Route::get('register', [AuthController::class, 'register']);
+  Route::get('forgot-password', 'forgotPassword')->name('forgotPassword');
+  Route::post('forgot-password', 'postForgotPassword');
 
-Route::post('register', [AuthController::class, 'postRegister']);
+  Route::get('reset-password/{token}', 'resetPassword')->name('resetPassword');
+  Route::post('reset-password/{token}', 'postResetPassword');
+});
 
-Route::get('forgot-password', [AuthController::class, 'forgotPassword']);
+// ******** Dashboard Routes ********
+Route::get('dashboard', [DashboardController::class, 'dashboard'])
+  ->name('dashboard')
+  ->middleware('auth');
 
-Route::post('forgot-password', [AuthController::class, 'postForgotPassword']);
-
-Route::get('reset-password/{token}', [AuthController::class, 'resetPassword']);
-
-Route::post('reset-password/{token}', [AuthController::class, 'postResetPassword']);
-
-// Dashboard
-Route::get('dashboard', [DashboardController::class, 'dashboard']);
+// ******** Admin Module Routes ********
+Route::resource('admins', AdminController::class)->except('show');
