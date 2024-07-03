@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Admin List')
+@section('title', 'Class List')
 
 @section('left_header')
-    Admin List (Total: {{ $users->total() }})
+    Class List (Total: {{ $classes->total() }})
 @endsection
 
 @section('right_header')
-    <a href="{{ route('admins.create') }}" class="btn btn-primary">Add New Admin</a>
+    <a href="{{ route('classes.create') }}" class="btn btn-primary">Add New Class</a>
 @endsection
 
 @section('page_content')
@@ -20,17 +20,8 @@
                     <div class="form-group">
                         <label for="name">Name</label>
 
-                        <input type="text" class="form-control" id="name" placeholder="Name" name="name"
+                        <input type="text" class="form-control" id="name" placeholder="Class Name" name="name"
                             value="{{ Request::get('name') }}" />
-                    </div>
-                </div>
-
-                <div class="col-2">
-                    <div class="form-group">
-                        <label for="email">Email</label>
-
-                        <input type="text" class="form-control" id="email" placeholder="Email" name="email"
-                            value="{{ Request::get('email') }}" />
                     </div>
                 </div>
 
@@ -53,9 +44,9 @@
                         <select class="form-control" id="created_by" name="created_by">
                             <option value="">-- Created By --</option>
 
-                            @foreach ($admins_creators as $creator)
-                                <option value="{{ $creator->id }}" {{ Request::get('created_by') == $creator->id ? 'selected' : '' }}>
-                                    {{ $creator->name }}
+                            @foreach ($admins as $admin)
+                                <option value="{{ $admin->id }}" {{ Request::get('created_by') == $admin->id ? 'selected' : '' }}>
+                                    {{ $admin->name }}
                                 </option>
                             @endforeach
                         </select>
@@ -67,7 +58,8 @@
                         Search
                     </button>
 
-                    <a class="btn btn-danger px-4" style="position: relative; top: 7px;" href="{{ route('admins.index') }}">
+                    <a class="btn btn-danger px-4" style="position: relative; top: 7px;"
+                        href="{{ route('classes.index') }}">
                         Reset
                     </a>
                 </div>
@@ -80,35 +72,35 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Email</th>
                     <th scope="col">Status</th>
+                    <th scope="col">Created_by</th>
                     <th scope="col">Actions</th>
                 </tr>
             </thead>
 
             <tbody>
-                @foreach ($users as $key => $user)
+                @foreach ($classes as $key => $class)
                     <tr>
                         <th scope="row">{{ ++$key }}</th>
 
-                        <td>{{ $user->name }}</td>
-
-                        <td>{{ $user->email }}</td>
+                        <td>{{ $class->name }}</td>
 
                         <td>
-                            @if ($user->status)
+                            @if ($class->status)
                                 <span class="badge badge-success">Active</span>
                             @else
                                 <span class="badge badge-danger">Stopped</span>
                             @endif
                         </td>
 
+                        <td>{{ $class->created_by_user }}</td>
+
                         <td class="d-flex" style="gap: 7px">
-                            <a class="btn btn-warning" href="{{ route('admins.edit', $user->id) }}">
+                            <a class="btn btn-warning" href="{{ route('classes.edit', $class->id) }}">
                                 <i class="fas fa-edit"></i>
                             </a>
 
-                            <form method="post" action="{{ route('admins.destroy', $user->id) }}">
+                            <form method="post" action="{{ route('classes.destroy', $class->id) }}">
                                 @method('delete')
                                 @csrf
 
@@ -123,7 +115,7 @@
 
         </table>
 
-        <div class="float-right">{{ $users->links() }}</div>
+        <div class="float-right">{{ $classes->links() }}</div>
 
     </div>
 @endsection

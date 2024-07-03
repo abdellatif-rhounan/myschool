@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('password');
             $table->tinyInteger('user_type');
             $table->tinyInteger('status')->default(1);
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->foreign('created_by')->references('id')->on('users');
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

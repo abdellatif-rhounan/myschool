@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make(12345678),
             'user_type' => 2,
             'status' => 1,
+            'created_by' => 1,
         ]);
 
         User::factory()->create([
@@ -32,6 +33,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make(12345678),
             'user_type' => 3,
             'status' => 1,
+            'created_by' => 1,
         ]);
 
         User::factory()->create([
@@ -40,8 +42,13 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make(12345678),
             'user_type' => 4,
             'status' => 1,
+            'created_by' => 1,
         ]);
 
         User::factory(200)->create();
+
+        $this->call([
+            ClasseSeeder::class,
+        ]);
     }
 }

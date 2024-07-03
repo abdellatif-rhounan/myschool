@@ -44,6 +44,15 @@
                             <p>Admins</p>
                         </a>
                     </li>
+
+                    <li class="nav-item">
+                        <a href="{{ route('classes.index') }}"
+                            class="nav-link @if (request()->segment(1) == 'classes') active @endif">
+                            <i class="nav-icon fas fa-graduation-cap"></i>
+
+                            <p>Classes</p>
+                        </a>
+                    </li>
                 @elseif ($user_type == 2)
                     {{-- Teacher --}}
                 @elseif ($user_type == 3)

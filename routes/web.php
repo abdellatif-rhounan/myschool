@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\DashboardController;
 
 // ******** Auth Routes ********
@@ -29,3 +30,6 @@ Route::get('dashboard', [DashboardController::class, 'dashboard'])
 
 // ******** Admin Module Routes ********
 Route::resource('admins', AdminController::class)->except('show');
+
+// ******** Classes Module Routes ********
+Route::resource('classes', ClasseController::class)->except('show');
