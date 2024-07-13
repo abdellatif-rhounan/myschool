@@ -5,17 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Classe;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 
 class ClasseController extends Controller
 {
     public function index(Request $request)
     {
+        // Admins Creators of Classes
         $admins_ids = Classe::select('created_by')->distinct()->get();
 
         $admins = User::select('id', 'name')
             ->whereIn('id', $admins_ids)->get();
 
+        // Classes List
         $classes = Classe::join('users', 'users.id', '=', 'classes.created_by')
             ->select('classes.id', 'classes.name', 'classes.status', 'users.name AS created_by_user');
 
@@ -31,10 +34,15 @@ class ClasseController extends Controller
             $classes = $classes->where('classes.created_by', $request->input('created_by'));
         }
 
-        $classes = $classes->paginate(2)
+        $classes = $classes->paginate(8)
             ->withQueryString();
 
         return view('classes.index', ['classes' => $classes, 'admins' => $admins]);
+    }
+
+    public function show(Classe $class)
+    {
+        return view('classes.show', ['class' => $class]);
     }
 
     public function create()
@@ -45,7 +53,7 @@ class ClasseController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:150',
+            'name' => 'required|string|max:150|unique:classes',
             'status' => 'required',
         ]);
 
@@ -66,7 +74,7 @@ class ClasseController extends Controller
     public function update(Request $request, Classe $class)
     {
         $request->validate([
-            'name' => 'required|string|max:150',
+            'name' => ['required', 'string', 'max:150', Rule::unique('classes')->ignore($class->id)],
             'status' => 'required',
         ]);
 

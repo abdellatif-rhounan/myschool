@@ -3,87 +3,86 @@
 @section('title', 'Add New Admin')
 
 @section('left_header')
-    Add New Admin
+	Add New Admin
 @endsection
 
 @section('right_header')
-    <a href="{{ route('admins.index') }}" class="btn btn-primary">Admin List</a>
+	<a class="btn btn-primary" href="{{ route('admins.index') }}">Admin List</a>
 @endsection
 
 @section('page_content')
-    <div class="col-lg-4 mx-auto mt-2">
-        <div class="card card-success">
+	<div class="col-lg-4 mx-auto mt-2">
+		<div class="card card-success">
 
-            <div class="card-header">
-                <h3 class="card-title">Create Admin</h3>
-            </div>
+			<div class="card-header">
+				<h3 class="card-title">Create Admin</h3>
+			</div>
 
-            <form method="post" action="{{ route('admins.store') }}">
-                @csrf
+			<form method="post" action="{{ route('admins.store') }}">
+				@csrf
 
-                <div class="card-body">
+				<div class="card-body">
 
-                    <div class="form-group">
-                        <label for="name">Name</label>
+					<div class="form-group">
+						<label for="name">Name</label>
 
-                        <input type="text" class="form-control @error('name') is-invalid @enderror" id="name"
-                            placeholder="Name" name="name" value="{{ old('name') }}" />
+						<input class="form-control @error('name') is-invalid @enderror" id="name" name="name" type="text" value="{{ old('name') }}"
+							placeholder="Name" />
 
-                        @error('name')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
+						@error('name')
+							<div class="invalid-feedback">{{ $message }}</div>
+						@enderror
+					</div>
 
-                    <div class="form-group">
-                        <label for="email">Email</label>
+					<div class="form-group">
+						<label for="email">Email</label>
 
-                        <input type="email" class="form-control @error('email') is-invalid @enderror" id="email"
-                            placeholder="Email" name="email" value="{{ old('email') }}" />
+						<input class="form-control @error('email') is-invalid @enderror" id="email" name="email" type="email" value="{{ old('email') }}"
+							placeholder="Email" />
 
-                        @error('email')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
+						@error('email')
+							<div class="invalid-feedback">{{ $message }}</div>
+						@enderror
+					</div>
 
-                    <div class="form-group">
-                        <label for="password">Password</label>
+					<div class="form-group">
+						<label for="password">Password</label>
 
-                        <input type="password" class="form-control @error('password') is-invalid @enderror" id="password"
-                            placeholder="Password" name="password" />
+						<input class="form-control @error('password') is-invalid @enderror" id="password" name="password" type="password" placeholder="Password" />
 
-                        @error('password')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
+						@error('password')
+							<div class="invalid-feedback">{{ $message }}</div>
+						@enderror
+					</div>
 
-                    <div class="form-group">
-                        <label for="password_confirmation">Confirm Password</label>
+					<div class="form-group">
+						<label for="password_confirmation">Confirm Password</label>
 
-                        <input type="password" class="form-control @error('password') is-invalid @enderror"
-                            id="password_confirmation" placeholder="Confirm Password" name="password_confirmation" />
-                    </div>
+						<input class="form-control @error('password') is-invalid @enderror" id="password_confirmation" name="password_confirmation" type="password"
+							placeholder="Confirm Password" />
+					</div>
 
-                    <div class="form-group">
-                        <label for="status">Status</label>
+					<div class="form-group">
+						<label for="status">Status</label>
 
-                        <select class="form-control @error('status') is-invalid @enderror" id="status" name="status">
-                            <option value="">-- select status --</option>
-                            <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>Active</option>
-                            <option value="0" {{ old('status') == '0' ? 'selected' : '' }}>Stopped</option>
-                        </select>
+						<select class="form-control @error('status') is-invalid @enderror" id="status" name="status">
+							<option value="">-- select status --</option>
+							<option value="1" {{ old('status') == '1' ? 'selected' : '' }}>Active</option>
+							<option value="0" {{ old('status') == '0' ? 'selected' : '' }}>Stopped</option>
+						</select>
 
-                        @error('status')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
+						@error('status')
+							<div class="invalid-feedback">{{ $message }}</div>
+						@enderror
+					</div>
 
-                </div>
+				</div>
 
-                <div class="card-footer">
-                    <button type="submit" class="btn btn-success">Submit</button>
-                </div>
-            </form>
+				<div class="card-footer">
+					<button class="btn btn-success" type="submit">Submit</button>
+				</div>
+			</form>
 
-        </div>
-    </div>
+		</div>
+	</div>
 @endsection

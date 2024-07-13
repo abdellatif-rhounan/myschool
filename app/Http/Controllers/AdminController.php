@@ -54,6 +54,11 @@ class AdminController extends Controller implements HasMiddleware
         return view('admins.index', ['users' => $users, 'admins_creators' => $admins_creators]);
     }
 
+    public function show(User $user)
+    {
+        return view('admins.show', ['user' => $user]);
+    }
+
     public function create()
     {
         return view('admins.create');

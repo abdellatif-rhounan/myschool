@@ -3,119 +3,121 @@
 @section('title', 'Class List')
 
 @section('left_header')
-    Class List (Total: {{ $classes->total() }})
+	Class List (Total: {{ $classes->total() }})
 @endsection
 
 @section('right_header')
-    <a href="{{ route('classes.create') }}" class="btn btn-primary">Add New Class</a>
+	<a class="btn btn-primary" href="{{ route('classes.create') }}">Add New Class</a>
 @endsection
 
 @section('page_content')
-    <div class="col-lg-12">
+	<div class="col-lg-12">
 
-        <form method="get" class="mb-3">
-            <div class="row align-items-center">
+		<form class="mb-3" method="get">
+			<div class="row align-items-center">
 
-                <div class="col-2">
-                    <div class="form-group">
-                        <label for="name">Name</label>
+				<div class="col-2">
+					<div class="form-group">
+						<label for="name">Name</label>
 
-                        <input type="text" class="form-control" id="name" placeholder="Class Name" name="name"
-                            value="{{ Request::get('name') }}" />
-                    </div>
-                </div>
+						<input class="form-control" id="name" name="name" type="text" value="{{ Request::get('name') }}" placeholder="Class Name" />
+					</div>
+				</div>
 
-                <div class="col-2">
-                    <div class="form-group">
-                        <label for="status">Status</label>
+				<div class="col-2">
+					<div class="form-group">
+						<label for="status">Status</label>
 
-                        <select class="form-control" id="status" name="status">
-                            <option value="">-- select status --</option>
-                            <option value="1" {{ Request::get('status') == '1' ? 'selected' : '' }}>Active</option>
-                            <option value="0" {{ Request::get('status') == '0' ? 'selected' : '' }}>Stopped</option>
-                        </select>
-                    </div>
-                </div>
+						<select class="form-control" id="status" name="status">
+							<option value="">-- select status --</option>
+							<option value="1" {{ Request::get('status') == '1' ? 'selected' : '' }}>Active</option>
+							<option value="0" {{ Request::get('status') == '0' ? 'selected' : '' }}>Stopped</option>
+						</select>
+					</div>
+				</div>
 
-                <div class="col-2">
-                    <div class="form-group">
-                        <label for="created_by">Created By</label>
+				<div class="col-2">
+					<div class="form-group">
+						<label for="created_by">Created By</label>
 
-                        <select class="form-control" id="created_by" name="created_by">
-                            <option value="">-- Created By --</option>
+						<select class="form-control" id="created_by" name="created_by">
+							<option value="">-- Created By --</option>
 
-                            @foreach ($admins as $admin)
-                                <option value="{{ $admin->id }}" {{ Request::get('created_by') == $admin->id ? 'selected' : '' }}>
-                                    {{ $admin->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
+							@foreach ($admins as $admin)
+								<option value="{{ $admin->id }}" {{ Request::get('created_by') == $admin->id ? 'selected' : '' }}>
+									{{ $admin->name }}
+								</option>
+							@endforeach
+						</select>
+					</div>
+				</div>
 
-                <div class="col-4">
-                    <button type="submit" class="btn btn-success px-4" style="position: relative; top: 7px;">
-                        Search
-                    </button>
+				<div class="col-4">
+					<button class="btn btn-success px-4" type="submit" style="position: relative; top: 7px;">
+						Search
+					</button>
 
-                    <a class="btn btn-danger px-4" style="position: relative; top: 7px;"
-                        href="{{ route('classes.index') }}">
-                        Reset
-                    </a>
-                </div>
-            </div>
-        </form>
+					<a class="btn btn-danger px-4" href="{{ route('classes.index') }}" style="position: relative; top: 7px;">
+						Reset
+					</a>
+				</div>
+			</div>
+		</form>
 
-        <table class="table table-striped table-hover">
+		<table class="table-striped table-hover table">
 
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Created_by</th>
-                    <th scope="col">Actions</th>
-                </tr>
-            </thead>
+			<thead>
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">Name</th>
+					<th scope="col">Status</th>
+					<th scope="col">Created_by</th>
+					<th scope="col">Actions</th>
+				</tr>
+			</thead>
 
-            <tbody>
-                @foreach ($classes as $key => $class)
-                    <tr>
-                        <th scope="row">{{ ++$key }}</th>
+			<tbody>
+				@foreach ($classes as $key => $class)
+					<tr>
+						<th scope="row">{{ ++$key }}</th>
 
-                        <td>{{ $class->name }}</td>
+						<td>{{ $class->name }}</td>
 
-                        <td>
-                            @if ($class->status)
-                                <span class="badge badge-success">Active</span>
-                            @else
-                                <span class="badge badge-danger">Stopped</span>
-                            @endif
-                        </td>
+						<td>
+							@if ($class->status)
+								<span class="badge badge-success">Active</span>
+							@else
+								<span class="badge badge-danger">Stopped</span>
+							@endif
+						</td>
 
-                        <td>{{ $class->created_by_user }}</td>
+						<td>{{ $class->created_by_user }}</td>
 
-                        <td class="d-flex" style="gap: 7px">
-                            <a class="btn btn-warning" href="{{ route('classes.edit', $class->id) }}">
-                                <i class="fas fa-edit"></i>
-                            </a>
+						<td class="d-flex" style="gap: 7px">
+							<a class="btn btn-info" href="{{ route('classes.show', $class->id) }}">
+								<i class="fas fa-eye"></i>
+							</a>
 
-                            <form method="post" action="{{ route('classes.destroy', $class->id) }}">
-                                @method('delete')
-                                @csrf
+							<a class="btn btn-warning" href="{{ route('classes.edit', $class->id) }}">
+								<i class="fas fa-edit"></i>
+							</a>
 
-                                <button type="submit" class="btn btn-danger">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
+							<form method="post" action="{{ route('classes.destroy', $class->id) }}">
+								@method('delete')
+								@csrf
 
-        </table>
+								<button class="btn btn-danger" type="submit">
+									<i class="fas fa-trash"></i>
+								</button>
+							</form>
+						</td>
+					</tr>
+				@endforeach
+			</tbody>
 
-        <div class="float-right">{{ $classes->links() }}</div>
+		</table>
 
-    </div>
+		<div class="float-right">{{ $classes->links() }}</div>
+
+	</div>
 @endsection
