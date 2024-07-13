@@ -4,12 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 
-class AdminController extends Controller
+class AdminController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            'role_user:admin'
+        ];
+    }
+
     public function index(Request $request)
     {
         // List Of Admin Creators
@@ -20,7 +28,8 @@ class AdminController extends Controller
             ->get();
 
         // List Of Admins
-        $users = User::where('user_type', 1);
+        $users = User::select('id', 'name', 'email', 'status')
+            ->where('user_type', 1);
 
         if ($request->input('name')) {
             $users = $users->where('name', 'LIKE', '%' . $request->input('name') . '%');
@@ -71,17 +80,13 @@ class AdminController extends Controller
         return to_route('admins.index')->with('success', 'Admin Created Successfully');
     }
 
-    public function edit(string $id)
+    public function edit(User $user)
     {
-        $user = User::findOrFail($id);
-
         return view('admins.edit', ['user' => $user]);
     }
 
-    public function update(Request $request, string $id)
+    public function update(Request $request, User $user)
     {
-        $user = User::findOrFail($id);
-
         $request->validate([
             'name' => 'required|string|min:3|max:50',
             'email' => ['required', 'email', Rule::unique('users')->ignore($user->id),],
@@ -92,8 +97,6 @@ class AdminController extends Controller
         $user->name = trim($request->name);
         $user->email = trim($request->email);
         $user->status = $request->status ? 1 : 0;
-        $user->user_type = 1;
-        $user->created_by = Auth::user()->id;
 
         if ($request->password) {
             $user->password = Hash::make($request->password);
@@ -104,11 +107,9 @@ class AdminController extends Controller
         return to_route('admins.index')->with('success', 'Admin Updated Successfully');
     }
 
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        $user = User::findOrFail($id);
-
-        User::destroy($user->id);
+        $user->delete();
 
         return to_route('admins.index')->with('success', 'Admin Deleted Successfully');
     }
