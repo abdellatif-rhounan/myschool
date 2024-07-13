@@ -5,13 +5,23 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Http\Middleware\notAuth;
 use App\Mail\ForgotPasswordMail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Routing\Controllers\HasMiddleware;
 
-class AuthController extends Controller
+class AuthController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware(notAuth::class, only: ['register', 'forgotPassword', 'resetPassword']),
+        ];
+    }
+
     public function login()
     {
         if (Auth::check()) {
@@ -25,7 +35,7 @@ class AuthController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
-            'password' => 'required|min:8'
+            'password' => 'required|string|min:8'
         ]);
 
         $remember = $request->remember ? true : false;
@@ -46,10 +56,6 @@ class AuthController extends Controller
 
     public function register()
     {
-        if (Auth::check()) {
-            Auth::logout();
-        }
-
         return view('auth.register');
     }
 
@@ -57,18 +63,36 @@ class AuthController extends Controller
     {
         $request->validate([
             'name' => 'required|string|min:3|max:50',
-            'email' => 'required|email|max:50|unique:users',
-            'password' => 'required|min:8|confirmed',
+            'email' => 'required|email|unique:users',
+            'user_type' => 'required',
+            'password' => 'required|string|min:8|confirmed',
             'terms' => 'required',
         ]);
 
         $user = new User();
-
         $user->name = trim($request->name);
         $user->email = trim($request->email);
         $user->password = Hash::make($request->password);
-        $user->user_type = 3;
         $user->status = 1;
+
+        switch ($request->user_type) {
+            case 1:
+                $user->user_type = 1;
+                break;
+            case 2:
+                $user->user_type = 2;
+                break;
+            case 3:
+                $user->user_type = 3;
+                break;
+            case 4:
+                $user->user_type = 4;
+                break;
+            default:
+                $user->user_type = 3;
+                break;
+        }
+
         $user->save();
 
         return to_route('login')->with('success', 'Account Created Successfuly');
@@ -76,10 +100,6 @@ class AuthController extends Controller
 
     public function forgotPassword()
     {
-        if (Auth::check()) {
-            Auth::logout();
-        }
-
         return view('auth.forgot_password');
     }
 
@@ -89,7 +109,9 @@ class AuthController extends Controller
             'email' => 'required|email',
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        $user = User::select('id', 'name', 'remember_token')
+            ->where('email', $request->email)
+            ->first();
 
         if (!$user) {
             return redirect()->back()->with('error', 'Email Not Found!');
@@ -105,14 +127,12 @@ class AuthController extends Controller
 
     public function resetPassword($token)
     {
-        $user = User::where('remember_token', $token)->first();
+        $user = User::select('remember_token')
+            ->where('remember_token', $token)
+            ->first();
 
         if (!$user) {
             abort(404);
-        }
-
-        if (Auth::check()) {
-            Auth::logout();
         }
 
         return view('auth.reset_password', ['token' => $user->remember_token]);
@@ -121,11 +141,13 @@ class AuthController extends Controller
     public function postResetPassword(Request $request)
     {
         $request->validate([
-            'password' => 'required|min:8|confirmed',
+            'password' => 'required|string|min:8|confirmed',
             'token' => 'required|string',
         ]);
 
-        $user = User::where('remember_token', $request->token)->first();
+        $user = User::select('id', 'password', 'remember_token')
+            ->where('remember_token', $request->token)
+            ->first();
 
         if (!$user) {
             abort(404);

@@ -34,6 +34,20 @@
     </div>
 
     <div class="input-group mb-3">
+        <select class="custom-select @error('user_type') is-invalid @enderror" name="user_type">
+            <option value="">----- Type of User -----</option>
+            <option value="1" {{ old('user_type') == 1 ? 'selected':'' }}>Admin</option>
+            <option value="2" {{ old('user_type') == 2 ? 'selected':'' }}>Teacher</option>
+            <option value="3" {{ old('user_type') == 3 ? 'selected':'' }}>Student</option>
+            <option value="4" {{ old('user_type') == 4 ? 'selected':'' }}>Parent</option>
+        </select>
+
+        @error('user_type')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <div class="input-group mb-3">
         <input type="password" class="form-control @error('password') is-invalid @enderror" placeholder="Password"
             name="password" />
 
