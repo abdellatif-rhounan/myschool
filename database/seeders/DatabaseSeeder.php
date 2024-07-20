@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Subject;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -50,5 +51,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             ClasseSeeder::class,
         ]);
+
+        Subject::factory(25)->create();
     }
 }

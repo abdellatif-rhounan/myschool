@@ -57,11 +57,11 @@ class ClasseController extends Controller
             'status' => 'required',
         ]);
 
-        $user = new Classe();
-        $user->name = trim($request->name);
-        $user->status = $request->status ? 1 : 0;
-        $user->created_by = Auth::user()->id;
-        $user->save();
+        $class = new Classe();
+        $class->name = trim($request->name);
+        $class->status = $request->status ? 1 : 0;
+        $class->created_by = Auth::user()->id;
+        $class->save();
 
         return to_route('classes.index')->with('success', 'Class Created Successfully');
     }

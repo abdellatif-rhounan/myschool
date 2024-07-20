@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ClasseController;
+use App\Http\Controllers\SubjectController;
 
 // ******** Auth Routes ********
 Route::controller(AuthController::class)->group(function () {
@@ -32,5 +33,6 @@ Route::middleware('auth')->group(function () {
 	Route::resources([
 		'admins' => AdminController::class,
 		'classes' => ClasseController::class,
+		'subjects' => SubjectController::class,
 	]);
 });

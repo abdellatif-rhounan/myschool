@@ -125,7 +125,7 @@ class AuthController extends Controller implements HasMiddleware
         return to_route('login')->with('success', 'Email sent Successfully');
     }
 
-    public function resetPassword($token)
+    public function resetPassword(string $token)
     {
         $user = User::select('remember_token')
             ->where('remember_token', $token)

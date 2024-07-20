@@ -50,4 +50,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Classe::class);
     }
+
+    // Relationship with Subject Model
+    public function subjects(): HasMany
+    {
+        return $this->hasMany(Subject::class);
+    }
 }

@@ -1,7 +1,8 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
 
 	<a class="brand-link" href="javascript:;">
-		<img class="brand-image img-circle elevation-3" src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" style="opacity: .8" />
+		<img class="brand-image img-circle elevation-3" src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
+			style="opacity: .8" />
 
 		<span class="brand-text">{{ config('app.name') }}</span>
 	</a>
@@ -47,6 +48,14 @@
 							<i class="nav-icon fas fa-graduation-cap"></i>
 
 							<p>Classes</p>
+						</a>
+					</li>
+
+					<li class="nav-item">
+						<a class="nav-link @if (request()->segment(1) == 'subjects') active @endif" href="{{ route('subjects.index') }}">
+							<i class="nav-icon fas fa-graduation-cap"></i>
+
+							<p>Subjects</p>
 						</a>
 					</li>
 				@elseif ($user_type == 2)
