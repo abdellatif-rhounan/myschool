@@ -5,20 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
     use HasFactory, SoftDeletes;
-
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'user_type',
-        'status',
-        'created_by'
-    ];
 
     protected $hidden = [
         'password',
@@ -28,18 +20,17 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
     }
 
-    // Self Relationship
-    public function creator()
+    // Self Relationship (BelongsTo)
+    public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
     }
 
-    // Self Relationship
+    // Self Relationship (HasMany)
     public function creations(): HasMany
     {
         return $this->hasMany(User::class, 'created_by');
@@ -48,12 +39,12 @@ class User extends Authenticatable
     // Relationship with Class Model
     public function classes(): HasMany
     {
-        return $this->hasMany(Classe::class);
+        return $this->hasMany(Classe::class, 'created_by');
     }
 
     // Relationship with Subject Model
     public function subjects(): HasMany
     {
-        return $this->hasMany(Subject::class);
+        return $this->hasMany(Subject::class, 'created_by');
     }
 }

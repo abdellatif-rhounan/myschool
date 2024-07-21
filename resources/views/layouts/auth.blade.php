@@ -19,7 +19,7 @@
 		<div class="card card-outline card-primary">
 
 			<div class="card-header text-center">
-				<a class="h1" href="javascript:;">
+				<a class="h1" href="{{ route('home') }}">
 					<b>{{ config('app.name') }}</b>
 				</a>
 			</div>
@@ -32,26 +32,16 @@
 				<form method="post">
 					@csrf
 
-					<div class="input-group mb-3">
-						@yield('input1')
-
-						<div class="input-group-append">
-							<div class="input-group-text">
-								<span class="@yield('input1_icon')"></span>
-							</div>
-						</div>
-
-						@yield('input1_invalid_feedback')
-					</div>
-
-					@yield('next_input_group')
+					@yield('input_groups')
 
 					<div class="row">
 						@yield('form_submit_area')
 					</div>
 				</form>
 
-				@yield('links')
+				<p class="mb-1 mt-3">
+					@yield('links')
+				</p>
 			</div>
 		</div>
 	</div>

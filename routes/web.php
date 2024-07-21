@@ -6,15 +6,14 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\SubjectController;
 
+Route::permanentRedirect('/', 'login')->name('home');
+
 // ******** Auth Routes ********
 Route::controller(AuthController::class)->group(function () {
 	Route::get('login', 'login')->name('login');
 	Route::post('login', 'authLogin');
 
 	Route::get('logout', 'logout')->name('logout');
-
-	Route::get('register', 'register')->name('register');
-	Route::post('register', 'postRegister');
 
 	Route::get('forgot-password', 'forgotPassword')->name('forgotPassword');
 	Route::post('forgot-password', 'postForgotPassword');
@@ -26,13 +25,12 @@ Route::controller(AuthController::class)->group(function () {
 // ******** Routes Need Authentication ********
 Route::middleware('auth')->group(function () {
 	// ******** Dashboard Route ********
-	Route::view('dashboard', 'dashboard')
-		->name('dashboard');
+	Route::view('dashboard', 'dashboard')->name('dashboard');
 
 	// ******** Resources Routes ********
-	Route::resources([
-		'admins' => AdminController::class,
-		'classes' => ClasseController::class,
-		'subjects' => SubjectController::class,
-	]);
+	Route::resource('admins', AdminController::class);
+
+	Route::resource('classes', ClasseController::class);
+
+	Route::resource('subjects', SubjectController::class);
 });

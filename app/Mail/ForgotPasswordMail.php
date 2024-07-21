@@ -2,21 +2,19 @@
 
 namespace App\Mail;
 
-use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
-use Illuminate\Queue\SerializesModels;
 
 class ForgotPasswordMail extends Mailable
 {
-    use Queueable, SerializesModels;
+    protected $username;
+    protected $token;
 
-    protected $user;
-
-    public function __construct($user)
+    public function __construct($username, $token)
     {
-        $this->user = $user;
+        $this->username = $username;
+        $this->token = $token;
     }
 
     public function envelope(): Envelope
@@ -29,9 +27,10 @@ class ForgotPasswordMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'mail.forgot_password',
+            markdown: 'mails.forgot_password',
             with: [
-                'user' => $this->user,
+                'username' => $this->username,
+                'token' => $this->token,
             ],
         );
     }

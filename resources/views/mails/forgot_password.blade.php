@@ -1,11 +1,11 @@
 <x-mail::message>
 	# Request New Password
 
-	Hello {{ $user->name }},
+	Hello {{ $username }},
 
 	Reset Your Password with This Button Below!
 
-	<x-mail::button url="{{ route('resetPassword', $user->remember_token) }}">
+	<x-mail::button url="{{ route('resetPassword', $token) }}">
 		Reset Password
 	</x-mail::button>
 

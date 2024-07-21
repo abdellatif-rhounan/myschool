@@ -18,7 +18,7 @@ class AuthController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware(notAuth::class, only: ['register', 'forgotPassword', 'resetPassword']),
+            new Middleware(notAuth::class, only: ['forgotPassword', 'resetPassword']),
         ];
     }
 
@@ -34,7 +34,7 @@ class AuthController extends Controller implements HasMiddleware
     public function authLogin(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
+            'email' => 'required|email|max:50',
             'password' => 'required|string|min:8'
         ]);
 
@@ -54,50 +54,6 @@ class AuthController extends Controller implements HasMiddleware
         return to_route('login');
     }
 
-    public function register()
-    {
-        return view('auth.register');
-    }
-
-    public function postRegister(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|min:3|max:50',
-            'email' => 'required|email|unique:users',
-            'user_type' => 'required',
-            'password' => 'required|string|min:8|confirmed',
-            'terms' => 'required',
-        ]);
-
-        $user = new User();
-        $user->name = trim($request->name);
-        $user->email = trim($request->email);
-        $user->password = Hash::make($request->password);
-        $user->status = 1;
-
-        switch ($request->user_type) {
-            case 1:
-                $user->user_type = 1;
-                break;
-            case 2:
-                $user->user_type = 2;
-                break;
-            case 3:
-                $user->user_type = 3;
-                break;
-            case 4:
-                $user->user_type = 4;
-                break;
-            default:
-                $user->user_type = 3;
-                break;
-        }
-
-        $user->save();
-
-        return to_route('login')->with('success', 'Account Created Successfuly');
-    }
-
     public function forgotPassword()
     {
         return view('auth.forgot_password');
@@ -106,10 +62,10 @@ class AuthController extends Controller implements HasMiddleware
     public function postForgotPassword(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
+            'email' => 'required|email|max:50',
         ]);
 
-        $user = User::select('id', 'name', 'remember_token')
+        $user = User::select('id', 'name', 'email', 'remember_token')
             ->where('email', $request->email)
             ->first();
 
@@ -120,9 +76,13 @@ class AuthController extends Controller implements HasMiddleware
         $user->remember_token = Str::random(30);
         $user->save();
 
-        Mail::to($request->email)->send(new ForgotPasswordMail($user));
+        Mail::to($user->email)
+            ->send(new ForgotPasswordMail(
+                $user->name,
+                $user->remember_token
+            ));
 
-        return to_route('login')->with('success', 'Email sent Successfully');
+        return to_route('login')->with('success', 'Email Sent Successfully');
     }
 
     public function resetPassword(string $token)

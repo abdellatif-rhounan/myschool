@@ -1,6 +1,6 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
 
-	<a class="brand-link" href="javascript:;">
+	<a class="brand-link" href="{{ route('dashboard') }}">
 		<img class="brand-image img-circle elevation-3" src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
 			style="opacity: .8" />
 
