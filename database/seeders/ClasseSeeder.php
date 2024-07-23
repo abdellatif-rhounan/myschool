@@ -12,36 +12,43 @@ class ClasseSeeder extends Seeder
         $classes = [
             [
                 'name' => '1st Class',
+                'status' => '1',
                 'created_by' => 1,
             ],
             [
                 'name' => '2nd Class',
+                'status' => '1',
                 'created_by' => 1,
             ],
             [
                 'name' => '3rd Class',
+                'status' => '1',
                 'created_by' => 1,
             ],
             [
                 'name' => '4th Class',
+                'status' => '1',
                 'created_by' => 2,
             ],
             [
                 'name' => '5th Class',
+                'status' => '1',
                 'created_by' => 2,
             ],
             [
                 'name' => '6th Class',
+                'status' => '1',
                 'created_by' => 2,
+            ],
+            [
+                'name' => '7th Class',
+                'status' => '0',
+                'created_by' => 1,
             ],
         ];
 
         foreach ($classes as $class) {
-            Classe::create([
-                'name' => $class['name'],
-                'status' => 1,
-                'created_by' => $class['created_by'],
-            ]);
+            Classe::create($class);
         }
     }
 }

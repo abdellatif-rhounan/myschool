@@ -13,9 +13,7 @@ class SubjectController extends Controller
     public function index(Request $request)
     {
         // Admins Creators of Subjects
-        $admins_ids = Subject::select('created_by')
-            ->distinct()
-            ->get();
+        $admins_ids = Subject::distinct()->pluck('created_by');
 
         $admins = User::select('id', 'name')
             ->whereIn('id', $admins_ids)
@@ -25,24 +23,23 @@ class SubjectController extends Controller
         $subjects = Subject::join('users', 'users.id', '=', 'subjects.created_by')
             ->select('subjects.id', 'subjects.name', 'subjects.type', 'subjects.status', 'users.name AS created_by_user');
 
-        if ($request->input('name')) {
+        if ($request->filled('name')) {
             $subjects = $subjects->where('subjects.name', 'LIKE', '%' . $request->input('name') . '%');
         }
 
-        if ($request->input('type')) {
+        if ($request->filled('type')) {
             $subjects = $subjects->where('subjects.type', $request->input('type'));
         }
 
-        if (!is_null($request->input('status'))) {
+        if ($request->filled('status')) {
             $subjects = $subjects->where('subjects.status', $request->input('status'));
         }
 
-        if ($request->input('created_by')) {
+        if ($request->filled('created_by')) {
             $subjects = $subjects->where('subjects.created_by', $request->input('created_by'));
         }
 
-        $subjects = $subjects->paginate(8)
-            ->withQueryString();
+        $subjects = $subjects->paginate(7)->withQueryString();
 
         return view('subjects.index', ['subjects' => $subjects, 'admins' => $admins]);
     }
@@ -84,7 +81,7 @@ class SubjectController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255', Rule::unique('subjects')->ignore($subject->id)],
-            'type' => 'required',
+            'type' => 'required|string|max:150',
             'status' => 'required',
         ]);
 

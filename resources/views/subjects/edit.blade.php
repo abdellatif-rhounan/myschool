@@ -35,10 +35,10 @@
 						@enderror
 					</div>
 
-                    <div class="form-group">
+					<div class="form-group">
 						<label for="type">Type</label>
 
-						<select class="form-control @error('type') is-invalid @enderror" id="type" name="type">
+						<select class="custom-select @error('type') is-invalid @enderror" id="type" name="type">
 							<option value="">-- select type --</option>
 							<option value="Theory" {{ old('type', $subject->type) == 'Theory' ? 'selected' : '' }}>Theory
 							</option>
@@ -54,7 +54,7 @@
 					<div class="form-group">
 						<label for="status">Status</label>
 
-						<select class="form-control @error('status') is-invalid @enderror" id="status" name="status">
+						<select class="custom-select @error('status') is-invalid @enderror" id="status" name="status">
 							<option value="">-- select status --</option>
 							<option value="1" {{ old('status', $subject->status) == '1' ? 'selected' : '' }}>Active
 							</option>

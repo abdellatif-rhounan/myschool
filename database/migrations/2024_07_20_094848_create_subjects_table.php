@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', 255);
             $table->string('type', 150);
-            $table->tinyInteger('status')->default(1);
+            $table->tinyInteger('status');
             $table->unsignedBigInteger('created_by');
             $table->foreign('created_by')->references('id')->on('users');
             $table->timestamps();
