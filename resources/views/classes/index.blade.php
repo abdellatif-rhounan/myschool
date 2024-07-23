@@ -20,7 +20,8 @@
 					<div class="form-group">
 						<label for="name">Name</label>
 
-						<input class="form-control" id="name" name="name" type="text" value="{{ Request::get('name') }}" placeholder="Class Name" />
+						<input class="form-control" id="name" name="name" type="text" value="{{ Request::get('name') }}"
+							placeholder="Class Name" />
 					</div>
 				</div>
 
@@ -28,7 +29,7 @@
 					<div class="form-group">
 						<label for="status">Status</label>
 
-						<select class="form-control" id="status" name="status">
+						<select class="custom-select" id="status" name="status">
 							<option value="">-- select status --</option>
 							<option value="1" {{ Request::get('status') == '1' ? 'selected' : '' }}>Active</option>
 							<option value="0" {{ Request::get('status') == '0' ? 'selected' : '' }}>Stopped</option>
@@ -40,8 +41,8 @@
 					<div class="form-group">
 						<label for="created_by">Created By</label>
 
-						<select class="form-control" id="created_by" name="created_by">
-							<option value="">-- Created By --</option>
+						<select class="custom-select" id="created_by" name="created_by">
+							<option value="">-- created by --</option>
 
 							@foreach ($admins as $admin)
 								<option value="{{ $admin->id }}" {{ Request::get('created_by') == $admin->id ? 'selected' : '' }}>
@@ -71,7 +72,7 @@
 					<th scope="col">#</th>
 					<th scope="col">Name</th>
 					<th scope="col">Status</th>
-					<th scope="col">Created_by</th>
+					<th scope="col">Created By</th>
 					<th scope="col">Actions</th>
 				</tr>
 			</thead>

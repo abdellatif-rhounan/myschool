@@ -13,29 +13,29 @@ class ClasseController extends Controller
     public function index(Request $request)
     {
         // Admins Creators of Classes
-        $admins_ids = Classe::select('created_by')->distinct()->get();
+        $admins_ids = Classe::distinct()->pluck('created_by');
 
         $admins = User::select('id', 'name')
-            ->whereIn('id', $admins_ids)->get();
+            ->whereIn('id', $admins_ids)
+            ->get();
 
         // Classes List
         $classes = Classe::join('users', 'users.id', '=', 'classes.created_by')
             ->select('classes.id', 'classes.name', 'classes.status', 'users.name AS created_by_user');
 
-        if ($request->input('name')) {
+        if ($request->filled('name')) {
             $classes = $classes->where('classes.name', 'LIKE', '%' . $request->input('name') . '%');
         }
 
-        if (!is_null($request->input('status'))) {
+        if ($request->filled('status')) {
             $classes = $classes->where('classes.status', $request->input('status'));
         }
 
-        if ($request->input('created_by')) {
+        if ($request->filled('created_by')) {
             $classes = $classes->where('classes.created_by', $request->input('created_by'));
         }
 
-        $classes = $classes->paginate(8)
-            ->withQueryString();
+        $classes = $classes->paginate(7)->withQueryString();
 
         return view('classes.index', ['classes' => $classes, 'admins' => $admins]);
     }
@@ -53,7 +53,7 @@ class ClasseController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:150|unique:classes',
+            'name' => 'required|string|max:255|unique:classes',
             'status' => 'required',
         ]);
 
@@ -74,7 +74,7 @@ class ClasseController extends Controller
     public function update(Request $request, Classe $class)
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:150', Rule::unique('classes')->ignore($class->id)],
+            'name' => ['required', 'string', 'max:255', Rule::unique('classes')->ignore($class->id)],
             'status' => 'required',
         ]);
 

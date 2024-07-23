@@ -66,7 +66,7 @@
 					<div class="form-group">
 						<label for="status">Status</label>
 
-						<select class="form-control @error('status') is-invalid @enderror" id="status" name="status">
+						<select class="custom-select @error('status') is-invalid @enderror" id="status" name="status">
 							<option value="">-- select status --</option>
 							<option value="1" {{ old('status') == '1' ? 'selected' : '' }}>Active</option>
 							<option value="0" {{ old('status') == '0' ? 'selected' : '' }}>Stopped</option>

@@ -9,22 +9,39 @@ class ClasseSeeder extends Seeder
 {
     public function run(): void
     {
-        Classe::create([
-            'name' => '1st Class',
-            'status' => 1,
-            'created_by' => 1,
-        ]);
+        $classes = [
+            [
+                'name' => '1st Class',
+                'created_by' => 1,
+            ],
+            [
+                'name' => '2nd Class',
+                'created_by' => 1,
+            ],
+            [
+                'name' => '3rd Class',
+                'created_by' => 1,
+            ],
+            [
+                'name' => '4th Class',
+                'created_by' => 2,
+            ],
+            [
+                'name' => '5th Class',
+                'created_by' => 2,
+            ],
+            [
+                'name' => '6th Class',
+                'created_by' => 2,
+            ],
+        ];
 
-        Classe::create([
-            'name' => '2nd Class',
-            'status' => 1,
-            'created_by' => 1,
-        ]);
-
-        Classe::create([
-            'name' => '3rd Class',
-            'status' => 1,
-            'created_by' => 1,
-        ]);
+        foreach ($classes as $class) {
+            Classe::create([
+                'name' => $class['name'],
+                'status' => 1,
+                'created_by' => $class['created_by'],
+            ]);
+        }
     }
 }
