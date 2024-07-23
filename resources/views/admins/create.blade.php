@@ -26,8 +26,8 @@
 					<div class="form-group">
 						<label for="name">Name</label>
 
-						<input class="form-control @error('name') is-invalid @enderror" id="name" name="name" type="text" value="{{ old('name') }}"
-							placeholder="Name" />
+						<input class="form-control @error('name') is-invalid @enderror" id="name" name="name" type="text"
+							value="{{ old('name') }}" placeholder="Name" />
 
 						@error('name')
 							<div class="invalid-feedback">{{ $message }}</div>
@@ -37,8 +37,8 @@
 					<div class="form-group">
 						<label for="email">Email</label>
 
-						<input class="form-control @error('email') is-invalid @enderror" id="email" name="email" type="email" value="{{ old('email') }}"
-							placeholder="Email" />
+						<input class="form-control @error('email') is-invalid @enderror" id="email" name="email" type="email"
+							value="{{ old('email') }}" placeholder="Email" />
 
 						@error('email')
 							<div class="invalid-feedback">{{ $message }}</div>
@@ -48,7 +48,8 @@
 					<div class="form-group">
 						<label for="password">Password</label>
 
-						<input class="form-control @error('password') is-invalid @enderror" id="password" name="password" type="password" placeholder="Password" />
+						<input class="form-control @error('password') is-invalid @enderror" id="password" name="password" type="password"
+							placeholder="Password" />
 
 						@error('password')
 							<div class="invalid-feedback">{{ $message }}</div>
@@ -58,8 +59,8 @@
 					<div class="form-group">
 						<label for="password_confirmation">Confirm Password</label>
 
-						<input class="form-control @error('password') is-invalid @enderror" id="password_confirmation" name="password_confirmation" type="password"
-							placeholder="Confirm Password" />
+						<input class="form-control @error('password') is-invalid @enderror" id="password_confirmation"
+							name="password_confirmation" type="password" placeholder="Confirm Password" />
 					</div>
 
 					<div class="form-group">

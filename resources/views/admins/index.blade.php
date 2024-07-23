@@ -20,7 +20,8 @@
 					<div class="form-group">
 						<label for="name">Name</label>
 
-						<input class="form-control" id="name" name="name" type="text" value="{{ Request::get('name') }}" placeholder="Name" />
+						<input class="form-control" id="name" name="name" type="text" value="{{ Request::get('name') }}"
+							placeholder="Name" />
 					</div>
 				</div>
 
@@ -28,7 +29,8 @@
 					<div class="form-group">
 						<label for="email">Email</label>
 
-						<input class="form-control" id="email" name="email" type="text" value="{{ Request::get('email') }}" placeholder="Email" />
+						<input class="form-control" id="email" name="email" type="text" value="{{ Request::get('email') }}"
+							placeholder="Email" />
 					</div>
 				</div>
 
@@ -49,7 +51,7 @@
 						<label for="created_by">Created By</label>
 
 						<select class="custom-select" id="created_by" name="created_by">
-							<option value="">-- Created By --</option>
+							<option value="">-- created by --</option>
 
 							@foreach ($admins_creators as $creator)
 								<option value="{{ $creator->id }}" {{ Request::get('created_by') == $creator->id ? 'selected' : '' }}>

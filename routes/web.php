@@ -28,7 +28,7 @@ Route::middleware('auth')->group(function () {
 	Route::view('dashboard', 'dashboard')->name('dashboard');
 
 	// ******** Resources Routes ********
-	Route::resource('admins', AdminController::class);
+	Route::resource('admins', AdminController::class)->middleware('role_user:admin');
 
 	Route::resource('classes', ClasseController::class);
 

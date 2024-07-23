@@ -4,24 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 
-class AdminController extends Controller implements HasMiddleware
+class AdminController extends Controller
 {
-    public static function middleware(): array
-    {
-        return [
-            'role_user:admin'
-        ];
-    }
-
     public function index(Request $request)
     {
         // List Of Admin Creators
-        $admins_creators_ids = User::select('created_by')->distinct()->get();
+        $admins_creators_ids = User::distinct()->pluck('created_by');
 
         $admins_creators = User::select('id', 'name')
             ->whereIn('id', $admins_creators_ids)
@@ -31,24 +23,24 @@ class AdminController extends Controller implements HasMiddleware
         $users = User::select('id', 'name', 'email', 'status')
             ->where('user_type', 1);
 
-        if ($request->input('name')) {
+        if ($request->filled('name')) {
             $users = $users->where('name', 'LIKE', '%' . $request->input('name') . '%');
         }
 
-        if ($request->input('email')) {
+        if ($request->filled('email')) {
             $users = $users->where('email', 'LIKE', '%' . $request->input('email') . '%');
         }
 
-        if (!is_null($request->input('status'))) {
+        if ($request->filled('status')) {
             $users = $users->where('status', $request->input('status'));
         }
 
-        if ($request->input('created_by')) {
+        if ($request->filled('created_by')) {
             $users = $users->where('created_by', $request->input('created_by'));
         }
 
         $users = $users->orderBy('id', 'desc')
-            ->paginate(8)
+            ->paginate(7)
             ->withQueryString();
 
         return view('admins.index', ['users' => $users, 'admins_creators' => $admins_creators]);
@@ -67,8 +59,8 @@ class AdminController extends Controller implements HasMiddleware
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|min:3|max:50',
-            'email' => 'required|email|unique:users',
+            'name' => 'required|string|min:3|max:100',
+            'email' => 'required|email|max:50|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'status' => 'required',
         ]);
@@ -93,8 +85,8 @@ class AdminController extends Controller implements HasMiddleware
     public function update(Request $request, User $user)
     {
         $request->validate([
-            'name' => 'required|string|min:3|max:50',
-            'email' => ['required', 'email', Rule::unique('users')->ignore($user->id),],
+            'name' => 'required|string|min:3|max:100',
+            'email' => ['required', 'email', 'max:50', Rule::unique('users')->ignore($user->id),],
             'password' => 'nullable|string|min:8|confirmed',
             'status' => 'required',
         ]);
@@ -103,7 +95,7 @@ class AdminController extends Controller implements HasMiddleware
         $user->email = trim($request->email);
         $user->status = $request->status ? 1 : 0;
 
-        if ($request->password) {
+        if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
         }
 

@@ -49,7 +49,8 @@
 					<div class="form-group">
 						<label for="password">Password</label>
 
-						<input class="form-control @error('password') is-invalid @enderror" id="password" name="password" type="password" placeholder="Password" />
+						<input class="form-control @error('password') is-invalid @enderror" id="password" name="password" type="password"
+							placeholder="Password" />
 
 						@error('password')
 							<div class="invalid-feedback">{{ $message }}</div>
@@ -59,8 +60,8 @@
 					<div class="form-group">
 						<label for="password_confirmation">Confirm Password</label>
 
-						<input class="form-control @error('password') is-invalid @enderror" id="password_confirmation" name="password_confirmation" type="password"
-							placeholder="Confirm Password" />
+						<input class="form-control @error('password') is-invalid @enderror" id="password_confirmation"
+							name="password_confirmation" type="password" placeholder="Confirm Password" />
 					</div>
 
 					<div class="form-group">
