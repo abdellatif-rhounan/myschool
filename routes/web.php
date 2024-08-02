@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\ClasseSubjectController;
 
 Route::permanentRedirect('/', 'login')->name('home');
 
@@ -33,4 +34,6 @@ Route::middleware('auth')->group(function () {
 	Route::resource('classes', ClasseController::class);
 
 	Route::resource('subjects', SubjectController::class);
+
+	Route::resource('classes-subjects', ClasseSubjectController::class);
 });
