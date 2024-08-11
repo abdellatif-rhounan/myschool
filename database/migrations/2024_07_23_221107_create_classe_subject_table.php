@@ -13,11 +13,8 @@ return new class extends Migration
             $table->foreign('classe_id')->references('id')->on('classes');
             $table->unsignedBigInteger('subject_id');
             $table->foreign('subject_id')->references('id')->on('subjects');
-            $table->tinyInteger('status');
-            $table->unsignedBigInteger('created_by');
-            $table->foreign('created_by')->references('id')->on('users');
-            $table->timestamps();
-            $table->softDeletes();
+
+            $table->primary(['classe_id', 'subject_id']);
         });
     }
 

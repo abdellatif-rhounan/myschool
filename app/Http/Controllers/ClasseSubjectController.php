@@ -5,32 +5,42 @@ namespace App\Http\Controllers;
 use App\Models\Classe;
 use App\Models\Subject;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\ClasseSubject;
 
 class ClasseSubjectController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $classes = Classe::has('subjects')
-            ->with('subjects')
-            ->select('id', 'name')
-            ->get();
-
+        // Filter Content
         $subjects = Subject::has('classes')
             ->select('id', 'name')
             ->get();
 
+        // Assignments
+        if ($request->filled('subject')) {
+            $classes_ID = ClasseSubject::where('subject_id', $request->subject)
+                ->pluck('classe_id');
+
+            $classesAssignments = Classe::select('id', 'name')
+                ->whereIn('id', $classes_ID)
+                ->with('subjects')
+                ->paginate(5);
+        } else {
+            $classesAssignments = Classe::has('subjects')
+                ->with('subjects')
+                ->select('id', 'name')
+                ->paginate(5);
+        }
+
         return view('classes_subjects.index', [
-            'classes' => $classes,
-            'subjects' => $subjects
+            'subjects' => $subjects,
+            'classesAssignments' => $classesAssignments
         ]);
     }
 
     public function create()
     {
-        $classes = Classe::select('id', 'name')
-            ->orderBy('name')
-            ->get();
+        $classes = Classe::select('id', 'name')->get();
 
         $subjects = Subject::select('id', 'name')
             ->orderBy('name')
@@ -45,22 +55,22 @@ class ClasseSubjectController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'class' => 'required|string',        // display Error Not Working!!
-            'status' => 'required|string'
+            'class' => 'required|string',
+            'subjects' => 'required'
         ]);
 
         $class = Classe::findOrFail($request->class);
-        $status = $request->status ? 1 : 0;
-        $user = Auth::user()->id;
 
-        foreach ($request->subjects as $subject) {
-            $class->subjects()->attach(
-                $subject,
-                [
-                    'status' => $status,
-                    'created_by' => $user
-                ]
-            );
+        if ($request->filled('subjects')) {
+            foreach ($request->subjects as $subject) {
+                $relation = ClasseSubject::where('classe_id', $class->id)
+                    ->where('subject_id', $subject)
+                    ->first();
+
+                if (!$relation) {
+                    $class->subjects()->attach($subject);
+                }
+            }
         }
 
         return to_route('classes-subjects.index')->with('success', 'Subjects Assigned To Class Successfully');
@@ -68,19 +78,42 @@ class ClasseSubjectController extends Controller
 
     public function show(string $id)
     {
-        return view('classes_subjects.show');
+        $class = Classe::findOrFail($id);
+
+        return view('classes_subjects.show', compact('class'));
     }
 
     public function edit(string $id)
     {
-        return view('classes_subjects.edit');
+        $class = Classe::findOrFail($id);
+
+        $subjects = Subject::select('id', 'name')
+            ->orderBy('name')
+            ->get();
+
+        return view('classes_subjects.edit', compact('class', 'subjects'));
     }
 
     public function update(Request $request, string $id)
     {
+        $class = Classe::findOrFail($id);
+        $class->subjects()->detach();
+
+        if ($request->filled('subjects')) {
+            foreach ($request->subjects as $subject) {
+                $class->subjects()->attach($subject);
+            }
+        }
+
+        return to_route('classes-subjects.index')->with('success', "Class's Subjects Updated Successfully");
     }
 
     public function destroy(string $id)
     {
+        $class = Classe::findOrFail($id);
+
+        $class->subjects()->detach();
+
+        return to_route('classes-subjects.index')->with('success', "Class's Subjects Deleted Successfully");
     }
 }

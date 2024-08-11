@@ -20,8 +20,6 @@ class Subject extends Model
     // Relationship with Classe Model
     public function classes(): BelongsToMany
     {
-        return $this->belongsToMany(Classe::class)
-            ->withPivot('status', 'created_by')
-            ->withTimestamps();
+        return $this->belongsToMany(Classe::class);
     }
 }
