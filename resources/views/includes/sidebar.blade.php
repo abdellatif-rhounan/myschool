@@ -73,6 +73,15 @@
 				@elseif ($user_type == 4)
 					{{-- Parent --}}
 				@endif
+
+				<li class="nav-item">
+					<a class="nav-link @if (request()->segment(1) == 'change-password') active @endif" href="{{ route('change-password') }}">
+						<i class="nav-icon fas fa-key"></i>
+
+						<p>Change Password</p>
+					</a>
+				</li>
+
 			</ul>
 		</nav>
 	</div>

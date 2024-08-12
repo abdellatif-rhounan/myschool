@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\ClasseSubjectController;
+use App\Http\Controllers\UserController;
 
 Route::permanentRedirect('/', 'login')->name('home');
 
@@ -36,4 +37,7 @@ Route::middleware('auth')->group(function () {
 	Route::resource('subjects', SubjectController::class);
 
 	Route::resource('classes-subjects', ClasseSubjectController::class);
+
+	Route::get('change-password', [UserController::class, 'changePassword'])->name('change-password');
+	Route::post('change-password', [UserController::class, 'postChangePassword']);
 });
