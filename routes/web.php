@@ -2,11 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ClasseController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\ClasseSubjectController;
-use App\Http\Controllers\UserController;
 
 Route::permanentRedirect('/', 'login')->name('home');
 
@@ -31,6 +32,8 @@ Route::middleware('auth')->group(function () {
 
 	// ******** Resources Routes ********
 	Route::resource('admins', AdminController::class)->middleware('role_user:admin');
+
+	Route::resource('students', StudentController::class);
 
 	Route::resource('classes', ClasseController::class);
 

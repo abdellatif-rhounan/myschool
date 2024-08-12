@@ -44,6 +44,14 @@
 					</li>
 
 					<li class="nav-item">
+						<a class="nav-link @if (request()->segment(1) == 'students') active @endif" href="{{ route('students.index') }}">
+							<i class="nav-icon fas fa-user-tie"></i>
+
+							<p>Students</p>
+						</a>
+					</li>
+
+					<li class="nav-item">
 						<a class="nav-link @if (request()->segment(1) == 'classes') active @endif" href="{{ route('classes.index') }}">
 							<i class="nav-icon fas fa-graduation-cap"></i>
 
