@@ -18,6 +18,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Route::model('admin', User::class);
         Route::model('student', User::class);
+        Route::model('parent', User::class);
 
         Paginator::useBootstrap();
     }

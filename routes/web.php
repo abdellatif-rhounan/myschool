@@ -8,6 +8,7 @@ use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\ClasseSubjectController;
+use App\Http\Controllers\ParentController;
 
 Route::permanentRedirect('/', 'login')->name('home');
 
@@ -34,6 +35,8 @@ Route::middleware('auth')->group(function () {
 	Route::resource('admins', AdminController::class)->middleware('role_user:admin');
 
 	Route::resource('students', StudentController::class);
+
+	Route::resource('parents', ParentController::class);
 
 	Route::resource('classes', ClasseController::class);
 
