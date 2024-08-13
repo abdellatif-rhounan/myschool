@@ -17,6 +17,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Route::model('admin', User::class);
+        Route::model('teacher', User::class);
         Route::model('student', User::class);
         Route::model('parent', User::class);
 
