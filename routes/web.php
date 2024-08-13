@@ -55,6 +55,12 @@ Route::middleware('auth')->group(function () {
 
 	Route::resource('classes-subjects', ClasseSubjectController::class);
 
-	Route::get('change-password', [UserController::class, 'changePassword'])->name('change-password');
-	Route::post('change-password', [UserController::class, 'postChangePassword']);
+	Route::controller(UserController::class)->group(function () {
+		Route::get('profile', 'profile')->name('profile');
+		Route::get('profile/edit', 'editProfile')->name('profile-edit');
+		Route::put('profile/edit', 'updateProfile');
+
+		Route::get('change-password', 'changePassword')->name('change-password');
+		Route::post('change-password', 'postChangePassword');
+	});
 });

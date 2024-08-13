@@ -91,8 +91,8 @@ class AdminController extends Controller
             'status' => 'required',
         ]);
 
-        $user->name = trim($request->name);
-        $user->email = trim($request->email);
+        $user->name = $request->name;
+        $user->email = $request->email;
         $user->status = $request->status ? 1 : 0;
 
         if ($request->filled('password')) {

@@ -99,6 +99,14 @@
 				@endif
 
 				<li class="nav-item">
+					<a class="nav-link @if (request()->segment(1) == 'profile') active @endif" href="{{ route('profile') }}">
+						<i class="nav-icon fas fa-id-card"></i>
+
+						<p>My Profile</p>
+					</a>
+				</li>
+
+				<li class="nav-item">
 					<a class="nav-link @if (request()->segment(1) == 'change-password') active @endif" href="{{ route('change-password') }}">
 						<i class="nav-icon fas fa-key"></i>
 
