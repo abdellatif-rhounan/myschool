@@ -96,6 +96,13 @@
 					{{-- Student --}}
 				@elseif ($user_type == 4)
 					{{-- Parent --}}
+					<li class="nav-item">
+						<a class="nav-link @if (request()->segment(1) == 'my-children') active @endif" href="{{ route('my-children') }}">
+							<i class="nav-icon fas fa-id-card"></i>
+
+							<p>My Children</p>
+						</a>
+					</li>
 				@endif
 
 				<li class="nav-item">

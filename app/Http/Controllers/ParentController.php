@@ -157,4 +157,15 @@ class ParentController extends Controller
 
         return redirect()->back()->with('success', 'Student Removed Successfully');
     }
+
+    public function myChildren()
+    {
+        $user = User::findOrFail(Auth::user()->id);
+
+        $children = User::select('id', 'name', 'email', 'status')
+            ->where('parent_id', $user->id)
+            ->get();
+
+        return view('parents.my_children', compact('children'));
+    }
 }

@@ -47,6 +47,9 @@ Route::middleware('auth')->group(function () {
 			Route::post('parents/{parent}/assign-student/{studentID}', 'assignStudent')->name('assignStudent');
 			Route::delete('parents/remove-student/{student}', 'removeStudent')->name('removeStudent');
 		});
+
+		// Parent Side
+		Route::get('my-children', 'myChildren')->name('my-children');
 	});
 
 	Route::resource('classes', ClasseController::class);
