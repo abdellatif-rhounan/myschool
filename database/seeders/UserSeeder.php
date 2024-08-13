@@ -55,6 +55,6 @@ class UserSeeder extends Seeder
             'created_by' => 1,
         ]);
 
-        User::factory(200)->create();
+        User::factory(60)->create();
     }
 }

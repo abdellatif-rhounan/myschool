@@ -120,6 +120,10 @@
 									<i class="fas fa-trash"></i>
 								</button>
 							</form>
+
+							<a class="btn btn-info" href="{{ route('parents.students', $parent->id) }}">
+								<i class="fas fa-child"></i>
+							</a>
 						</td>
 					</tr>
 				@endforeach

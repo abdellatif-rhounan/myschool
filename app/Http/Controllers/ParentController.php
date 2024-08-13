@@ -112,4 +112,49 @@ class ParentController extends Controller
 
         return to_route('parents.index')->with('success', 'Parent Deleted Successfully');
     }
+
+    public function showStudents(Request $request, User $user)
+    {
+        // Searched Students
+        if ($request->anyFilled(['name', 'email'])) {
+            $student_result = User::select('id', 'name', 'email', 'status')
+                ->where('user_type', 3)
+                ->whereNull('parent_id');
+
+            if ($request->filled('name')) {
+                $student_result = $student_result->where('name', 'LIKE', '%' . $request->name . '%');
+            }
+            if ($request->filled('email')) {
+                $student_result = $student_result->where('email', 'LIKE', '%' . $request->email . '%');
+            }
+
+            $student_result = $student_result->orderBy('name')->get();
+        } else {
+            $student_result = [];
+        }
+
+        $my_students = User::select('id', 'name', 'email', 'status')
+            ->where('parent_id', $user->id)
+            ->get();
+
+        return view('parents.students', compact('user', 'my_students', 'student_result'));
+    }
+
+    public function assignStudent(User $user, string $studentID)
+    {
+        $student = User::findOrFail($studentID);
+
+        $student->parent_id = $user->id;
+        $student->save();
+
+        return redirect()->back()->with('success', 'Student Asigned To Parent Successfully');
+    }
+
+    public function removeStudent(User $user)
+    {
+        $user->parent_id = null;
+        $user->save();
+
+        return redirect()->back()->with('success', 'Student Removed Successfully');
+    }
 }

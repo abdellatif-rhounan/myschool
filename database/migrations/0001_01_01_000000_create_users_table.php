@@ -17,6 +17,8 @@ return new class extends Migration
             $table->tinyInteger('status')->default(1);
             $table->unsignedBigInteger('created_by');
             $table->foreign('created_by')->references('id')->on('users');
+            $table->unsignedBigInteger('parent_id')->nullable();
+            $table->foreign('parent_id')->references('id')->on('users');
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

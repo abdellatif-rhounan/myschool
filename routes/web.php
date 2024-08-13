@@ -38,6 +38,14 @@ Route::middleware('auth')->group(function () {
 
 	Route::resource('parents', ParentController::class);
 
+	Route::controller(ParentController::class)->group(function () {
+		Route::name('parents.')->group(function () {
+			Route::get('parents/{parent}/students', 'showStudents')->name('students');
+			Route::post('parents/{parent}/assign-student/{studentID}', 'assignStudent')->name('assignStudent');
+			Route::delete('parents/remove-student/{student}', 'removeStudent')->name('removeStudent');
+		});
+	});
+
 	Route::resource('classes', ClasseController::class);
 
 	Route::resource('subjects', SubjectController::class);
