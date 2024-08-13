@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Classe;
+use App\Models\ClasseSubject;
+use App\Models\Subject;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -111,5 +114,41 @@ class StudentController extends Controller
         $user->delete();
 
         return to_route('students.index')->with('success', 'Student Deleted Successfully');
+    }
+
+    public function mySubjects(Request $request)
+    {
+        $user = User::findOrFail(Auth::user()->id);
+
+        $classe = null;
+        $subjects = [];
+        $msg = '';
+
+        if ($user->classe_id) {
+            $classe = Classe::findOrFail($user->classe_id);
+
+            $subjectIDs = ClasseSubject::where('classe_id', $classe->id)->pluck('subject_id');
+
+            $subjects = Subject::select('id', 'name', 'type', 'status')
+                ->whereIn('id', $subjectIDs);
+
+            if ($request->filled('name')) {
+                $subjects = $subjects->where('name', 'LIKE', '%' . $request->input('name') . '%');
+            }
+
+            if ($request->filled('type')) {
+                $subjects = $subjects->where('type', $request->input('type'));
+            }
+
+            if ($request->filled('status')) {
+                $subjects = $subjects->where('status', $request->input('status'));
+            }
+
+            $subjects = $subjects->paginate(10);
+        } else {
+            $msg = 'You Are Not Assigned To Any Class';
+        }
+
+        return view('students.my_subjects', compact('classe', 'subjects', 'msg'));
     }
 }

@@ -91,4 +91,47 @@ class ClasseController extends Controller
 
         return to_route('classes.index')->with('success', 'Class Deleted Successfully');
     }
+
+    public function showStudents(Request $request, Classe $class)
+    {
+        // Searched Students
+        if ($request->anyFilled(['name', 'email'])) {
+            $student_result = User::select('id', 'name', 'email', 'status')
+                ->where('user_type', 3)
+                ->whereNull('classe_id');
+
+            if ($request->filled('name')) {
+                $student_result = $student_result->where('name', 'LIKE', '%' . $request->name . '%');
+            }
+            if ($request->filled('email')) {
+                $student_result = $student_result->where('email', 'LIKE', '%' . $request->email . '%');
+            }
+
+            $student_result = $student_result->orderBy('name')->get();
+        } else {
+            $student_result = [];
+        }
+
+        $class_students = User::select('id', 'name', 'email', 'status')
+            ->where('classe_id', $class->id)
+            ->get();
+
+        return view('classes.students', compact('class', 'class_students', 'student_result'));
+    }
+
+    public function assignStudent(Classe $class, User $user)
+    {
+        $user->classe_id = $class->id;
+        $user->save();
+
+        return redirect()->back()->with('success', 'Student Asigned To Class Successfully');
+    }
+
+    public function removeStudent(User $user)
+    {
+        $user->classe_id = null;
+        $user->save();
+
+        return redirect()->back()->with('success', 'Student Removed From Class Successfully');
+    }
 }

@@ -39,6 +39,8 @@ Route::middleware('auth')->group(function () {
 
 	Route::resource('students', StudentController::class);
 
+	Route::get('my-subjects', [StudentController::class, 'mySubjects'])->name('my-subjects');
+
 	Route::resource('parents', ParentController::class);
 
 	Route::controller(ParentController::class)->group(function () {
@@ -53,6 +55,14 @@ Route::middleware('auth')->group(function () {
 	});
 
 	Route::resource('classes', ClasseController::class);
+
+	Route::controller(ClasseController::class)->group(function () {
+		Route::name('classes.')->group(function () {
+			Route::get('classes/{class}/students', 'showStudents')->name('students');
+			Route::post('classes/{class}/assign-student/{student}', 'assignStudent')->name('assignStudent');
+			Route::delete('classes/remove-student/{student}', 'removeStudent')->name('removeStudent');
+		});
+	});
 
 	Route::resource('subjects', SubjectController::class);
 

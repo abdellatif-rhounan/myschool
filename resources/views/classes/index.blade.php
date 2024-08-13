@@ -111,6 +111,10 @@
 									<i class="fas fa-trash"></i>
 								</button>
 							</form>
+
+							<a class="btn btn-info" href="{{ route('classes.students', $class->id) }}">
+								<i class="fas fa-user-graduate"></i>
+							</a>
 						</td>
 					</tr>
 				@endforeach

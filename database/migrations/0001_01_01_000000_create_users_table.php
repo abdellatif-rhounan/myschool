@@ -15,10 +15,19 @@ return new class extends Migration
             $table->string('password');
             $table->tinyInteger('user_type');
             $table->tinyInteger('status')->default(1);
+
+            // User's Creator
             $table->unsignedBigInteger('created_by');
             $table->foreign('created_by')->references('id')->on('users');
+
+            // Student's Parent
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->foreign('parent_id')->references('id')->on('users');
+
+            // Student's Class
+            $table->unsignedBigInteger('classe_id')->nullable();
+            $table->foreign('classe_id')->references('id')->on('classes');
+
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
