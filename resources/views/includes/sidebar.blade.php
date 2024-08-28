@@ -100,6 +100,13 @@
 					</li>
 				@elseif ($user_type == 2)
 					{{-- Teacher --}}
+					<li class="nav-item">
+						<a class="nav-link @if (request()->segment(1) == 'my-classes-subjects') active @endif" href="{{ route('my-classes-subjects') }}">
+							<i class="nav-icon fas fa-graduation-cap"></i>
+
+							<p>My Class & Subject</p>
+						</a>
+					</li>
 				@elseif ($user_type == 3)
 					{{-- Student --}}
 					<li class="nav-item">

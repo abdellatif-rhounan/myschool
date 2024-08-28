@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Classe;
+use App\Models\ClasseSubject;
+use App\Models\Subject;
 use Illuminate\Http\Request;
+use App\Models\ClasseTeacher;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -111,5 +115,42 @@ class TeacherController extends Controller
         $user->delete();
 
         return to_route('teachers.index')->with('success', 'Teacher Deleted Successfully');
+    }
+
+    public function myClassesSubjects(Request $request)
+    {
+        // Assignments
+        $teacher_classes_ID = ClasseTeacher::where('user_id', Auth::user()->id)
+            ->pluck('classe_id');
+
+        if ($request->filled('subject')) {
+            $classes_ID = ClasseSubject::where('subject_id', $request->subject)
+                ->whereIn('classe_id', $teacher_classes_ID)
+                ->pluck('classe_id');
+
+            $classesAssignments = Classe::select('id', 'name')
+                ->whereIn('id', $classes_ID)
+                ->with('subjects')
+                ->paginate(5);
+        } else {
+            $classesAssignments = Classe::with('subjects')
+                ->select('id', 'name')
+                ->whereIn('id', $teacher_classes_ID)
+                ->paginate(5);
+        }
+
+        // Filter Content
+        $subjectsID = ClasseSubject::whereIn('classe_id', $teacher_classes_ID)
+            ->distinct()
+            ->pluck('subject_id');
+
+        $subjects = Subject::select('id', 'name')
+            ->whereIn('id', $subjectsID)
+            ->get();
+
+        return view('teachers.my_classes_subjects', [
+            'classesAssignments' => $classesAssignments,
+            'subjects' => $subjects
+        ]);
     }
 }

@@ -40,6 +40,8 @@ Route::middleware('auth')->group(function () {
 	// Teacher Related Routes
 	Route::resource('teachers', TeacherController::class);
 
+	Route::get('my-classes-subjects', [TeacherController::class, 'myClassesSubjects'])->name('my-classes-subjects');
+
 	// Student Related Routes
 	Route::resource('students', StudentController::class);
 
