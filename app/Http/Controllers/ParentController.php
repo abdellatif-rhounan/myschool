@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Classe;
+use App\Models\ClasseSubject;
+use App\Models\Subject;
 use App\Models\User;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
@@ -167,5 +170,35 @@ class ParentController extends Controller
             ->get();
 
         return view('parents.my_children', compact('children'));
+    }
+
+    public function myChildSubjects(Request $request, User $student)
+    {
+        if ($student->parent_id != Auth::user()->id) {
+            return redirect()->route('my-children');
+        }
+
+        $subjectsID = ClasseSubject::where('classe_id', $student->classe_id)->pluck('subject_id');
+
+        $subjects = Subject::select('id', 'name', 'type', 'status')
+            ->whereIn('id', $subjectsID);
+
+        if ($request->filled('name')) {
+            $subjects = $subjects->where('name', 'LIKE', '%' . $request->input('name') . '%');
+        }
+
+        if ($request->filled('type')) {
+            $subjects = $subjects->where('type', $request->input('type'));
+        }
+
+        if ($request->filled('status')) {
+            $subjects = $subjects->where('status', $request->input('status'));
+        }
+
+        $subjects = $subjects->paginate(10);
+
+        $className = Classe::where('id', $student->classe_id)->value('name');
+
+        return view('parents.my_child_subjects', compact('student', 'subjects', 'className'));
     }
 }

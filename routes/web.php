@@ -33,14 +33,18 @@ Route::middleware('auth')->group(function () {
 	Route::view('dashboard', 'dashboard')->name('dashboard');
 
 	// ******** Resources Routes ********
+	// Admin Related Routes
 	Route::resource('admins', AdminController::class)->middleware('role_user:admin');
 
+	// Teacher Related Routes
 	Route::resource('teachers', TeacherController::class);
 
+	// Student Related Routes
 	Route::resource('students', StudentController::class);
 
 	Route::get('my-subjects', [StudentController::class, 'mySubjects'])->name('my-subjects');
 
+	// Parent Related Routes
 	Route::resource('parents', ParentController::class);
 
 	Route::controller(ParentController::class)->group(function () {
@@ -52,8 +56,10 @@ Route::middleware('auth')->group(function () {
 
 		// Parent Side
 		Route::get('my-children', 'myChildren')->name('my-children');
+		Route::get('my-child/{student}/subjects', 'myChildSubjects')->name('my-child-subjects');
 	});
 
+	// Class Related Routes
 	Route::resource('classes', ClasseController::class);
 
 	Route::controller(ClasseController::class)->group(function () {
@@ -64,10 +70,13 @@ Route::middleware('auth')->group(function () {
 		});
 	});
 
+	// Subject Related Routes
 	Route::resource('subjects', SubjectController::class);
 
+	// Class Subject Related Routes
 	Route::resource('classes-subjects', ClasseSubjectController::class);
 
+	// User Related Routes
 	Route::controller(UserController::class)->group(function () {
 		Route::get('profile', 'profile')->name('profile');
 		Route::get('profile/edit', 'editProfile')->name('profile-edit');

@@ -23,6 +23,7 @@
 							<th scope="col">Name</th>
 							<th scope="col">Email</th>
 							<th scope="col">Status</th>
+							<th scope="col">Actions</th>
 						</tr>
 					</thead>
 
@@ -41,6 +42,12 @@
 									@else
 										<span class="badge badge-danger">Stopped</span>
 									@endif
+								</td>
+
+								<td class="d-flex" style="gap: 7px">
+									<a class="btn btn-primary" href="{{ route('my-child-subjects', $child->id) }}">
+										<i class="fas fa-book"></i>
+									</a>
 								</td>
 							</tr>
 						@endforeach
