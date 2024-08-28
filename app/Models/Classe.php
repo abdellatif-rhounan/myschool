@@ -22,4 +22,10 @@ class Classe extends Model
     {
         return $this->belongsToMany(Subject::class);
     }
+
+    // Relationship with User Model
+    public function teachers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class);
+    }
 }

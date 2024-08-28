@@ -5,11 +5,12 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ClasseController;
+use App\Http\Controllers\ParentController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
-use App\Http\Controllers\ClasseSubjectController;
-use App\Http\Controllers\ParentController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\ClasseSubjectController;
+use App\Http\Controllers\ClasseTeacherController;
 
 Route::permanentRedirect('/', 'login')->name('home');
 
@@ -75,6 +76,9 @@ Route::middleware('auth')->group(function () {
 
 	// Class Subject Related Routes
 	Route::resource('classes-subjects', ClasseSubjectController::class);
+
+	// Class Teacher Related Routes
+	Route::resource('classes-teachers', ClasseTeacherController::class);
 
 	// User Related Routes
 	Route::controller(UserController::class)->group(function () {
