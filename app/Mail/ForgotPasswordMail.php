@@ -8,13 +8,13 @@ use Illuminate\Mail\Mailables\Envelope;
 
 class ForgotPasswordMail extends Mailable
 {
-    protected $username;
-    protected $token;
+    protected $name;
+    protected $remember_token;
 
-    public function __construct($username, $token)
+    public function __construct($name, $remember_token)
     {
-        $this->username = $username;
-        $this->token = $token;
+        $this->name = $name;
+        $this->remember_token = $remember_token;
     }
 
     public function envelope(): Envelope
@@ -29,8 +29,8 @@ class ForgotPasswordMail extends Mailable
         return new Content(
             markdown: 'mails.forgot_password',
             with: [
-                'username' => $this->username,
-                'token' => $this->token,
+                'name' => $this->name,
+                'remember_token' => $this->remember_token,
             ],
         );
     }

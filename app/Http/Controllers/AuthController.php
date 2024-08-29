@@ -5,23 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Http\Middleware\notAuth;
 use App\Mail\ForgotPasswordMail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Routing\Controllers\Middleware;
-use Illuminate\Routing\Controllers\HasMiddleware;
 
-class AuthController extends Controller implements HasMiddleware
+class AuthController extends Controller
 {
-    public static function middleware(): array
-    {
-        return [
-            new Middleware(notAuth::class, only: ['forgotPassword', 'resetPassword']),
-        ];
-    }
-
     public function login()
     {
         if (Auth::check()) {
@@ -35,12 +25,16 @@ class AuthController extends Controller implements HasMiddleware
     {
         $request->validate([
             'email' => 'required|email|max:50',
-            'password' => 'required|string|min:8'
+            'password' => 'required|string|min:8|max:50'
         ]);
 
-        $remember = $request->remember ? true : false;
-
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $remember)) {
+        if (Auth::attempt(
+            [
+                'email' => $request->email,
+                'password' => $request->password
+            ],
+            $request->boolean('remember')
+        )) {
             return to_route('dashboard');
         } else {
             return redirect()->back()->with('error', 'Wrong Credentials');
@@ -85,33 +79,16 @@ class AuthController extends Controller implements HasMiddleware
         return to_route('login')->with('success', 'Email Sent Successfully');
     }
 
-    public function resetPassword(string $token)
+    public function resetPassword(User $user)
     {
-        $user = User::select('remember_token')
-            ->where('remember_token', $token)
-            ->first();
-
-        if (!$user) {
-            abort(404);
-        }
-
-        return view('auth.reset_password', ['token' => $user->remember_token]);
+        return view('auth.reset_password', ['remember_token' => $user->remember_token]);
     }
 
-    public function postResetPassword(Request $request)
+    public function postResetPassword(Request $request, User $user)
     {
         $request->validate([
-            'password' => 'required|string|min:8|confirmed',
-            'token' => 'required|string',
+            'password' => 'required|string|min:8|max:50|confirmed'
         ]);
-
-        $user = User::select('id', 'password', 'remember_token')
-            ->where('remember_token', $request->token)
-            ->first();
-
-        if (!$user) {
-            abort(404);
-        }
 
         $user->password = Hash::make($request->password);
         $user->remember_token = null;

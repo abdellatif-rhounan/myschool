@@ -51,5 +51,5 @@
 @endsection
 
 @section('links')
-	<a href="{{ route('forgotPassword') }}">I forgot my password</a>
+	<a href="{{ route('forgot-password') }}">I forgot my password</a>
 @endsection

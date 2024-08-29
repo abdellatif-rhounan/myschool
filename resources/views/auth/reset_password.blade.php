@@ -29,8 +29,6 @@
 			</div>
 		</div>
 	</div>
-
-	<input name="token" type="hidden" value="{{ $token }}" />
 @endsection
 
 @section('form_submit_area')
