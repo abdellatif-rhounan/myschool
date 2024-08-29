@@ -98,6 +98,14 @@
 							<p>Class Teacher</p>
 						</a>
 					</li>
+
+					<li class="nav-item">
+						<a class="nav-link @if (request()->segment(1) == 'classes-students') active @endif" href="{{ route('classes-students.index') }}">
+							<i class="nav-icon fas fa-graduation-cap"></i>
+
+							<p>Class Students</p>
+						</a>
+					</li>
 				@elseif ($user_type == 2)
 					{{-- Teacher --}}
 					<li class="nav-item">
@@ -105,6 +113,14 @@
 							<i class="nav-icon fas fa-graduation-cap"></i>
 
 							<p>My Class & Subject</p>
+						</a>
+					</li>
+
+					<li class="nav-item">
+						<a class="nav-link @if (request()->segment(1) == 'my-classes-students') active @endif" href="{{ route('my-classes-students') }}">
+							<i class="nav-icon fas fa-graduation-cap"></i>
+
+							<p>My Class & Students</p>
 						</a>
 					</li>
 				@elseif ($user_type == 3)

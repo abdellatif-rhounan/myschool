@@ -9,6 +9,7 @@ use App\Http\Controllers\ParentController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\ClasseStudentController;
 use App\Http\Controllers\ClasseSubjectController;
 use App\Http\Controllers\ClasseTeacherController;
 
@@ -41,6 +42,7 @@ Route::middleware('auth')->group(function () {
 	Route::resource('teachers', TeacherController::class);
 
 	Route::get('my-classes-subjects', [TeacherController::class, 'myClassesSubjects'])->name('my-classes-subjects');
+	Route::get('my-classes-students', [TeacherController::class, 'myClassesStudents'])->name('my-classes-students');
 
 	// Student Related Routes
 	Route::resource('students', StudentController::class);
@@ -81,6 +83,9 @@ Route::middleware('auth')->group(function () {
 
 	// Class Teacher Related Routes
 	Route::resource('classes-teachers', ClasseTeacherController::class);
+
+	// Class Student Related Routes
+	Route::resource('classes-students', ClasseStudentController::class);
 
 	// User Related Routes
 	Route::controller(UserController::class)->group(function () {

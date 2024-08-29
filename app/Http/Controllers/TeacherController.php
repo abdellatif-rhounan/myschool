@@ -153,4 +153,31 @@ class TeacherController extends Controller
             'subjects' => $subjects
         ]);
     }
+
+    public function myClassesStudents(Request $request)
+    {
+        // Assignments
+        $teacher_classes_ID = ClasseTeacher::where('user_id', Auth::user()->id)
+            ->pluck('classe_id');
+
+        $classes = Classe::select('id', 'name')
+            ->whereIn('id', $teacher_classes_ID)
+            ->orderBy('name')
+            ->get();
+
+        if ($request->filled('class')) {
+            $classesAssignments = Classe::with('students')
+                ->select('id', 'name')
+                ->where('id', $request->class)
+                ->paginate(1);
+        } else {
+            $classesAssignments = Classe::with('students')
+                ->select('id', 'name')
+                ->whereIn('id', $teacher_classes_ID)
+                ->orderBy('name')
+                ->paginate(5);
+        }
+
+        return view('teachers.my_classes_students', compact('classes', 'classesAssignments'));
+    }
 }
