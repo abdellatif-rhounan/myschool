@@ -19,7 +19,7 @@
 		<div class="card card-outline card-primary">
 
 			<div class="card-header text-center">
-				<a class="h1" href="{{ route('home') }}">
+				<a class="h1" href="{{ route('root') }}">
 					<b>{{ config('app.name') }}</b>
 				</a>
 			</div>
@@ -31,6 +31,7 @@
 
 				<form method="post">
 					@csrf
+					@yield('form_method_hidden_field')
 
 					@yield('input_groups')
 

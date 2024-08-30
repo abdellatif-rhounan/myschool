@@ -4,6 +4,10 @@
 
 @section('box_msg', 'You are only one step a way from your new password, recover your password now.')
 
+@section('form_method_hidden_field')
+	@method('PATCH')
+@endsection
+
 @section('input_groups')
 	<div class="input-group mb-3">
 		<input class="form-control @error('password') is-invalid @enderror" name="password" type="password" placeholder="Password" />
@@ -20,8 +24,8 @@
 	</div>
 
 	<div class="input-group mb-3">
-		<input class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation"
-			type="password" placeholder="Confirm Password" />
+		<input class="form-control @error('password') is-invalid @enderror" name="password_confirmation" type="password"
+			placeholder="Confirm Password" />
 
 		<div class="input-group-append">
 			<div class="input-group-text">

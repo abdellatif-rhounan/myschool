@@ -59,7 +59,7 @@ class AuthController extends Controller
             'email' => 'required|email|max:50',
         ]);
 
-        $user = User::select('id', 'name', 'email', 'remember_token')
+        $user = User::select('id', 'name', 'remember_token')
             ->where('email', $request->email)
             ->first();
 
@@ -70,7 +70,7 @@ class AuthController extends Controller
         $user->remember_token = Str::random(30);
         $user->save();
 
-        Mail::to($user->email)
+        Mail::to($request->email)
             ->send(new ForgotPasswordMail(
                 $user->name,
                 $user->remember_token

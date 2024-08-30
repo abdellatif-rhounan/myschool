@@ -14,7 +14,7 @@ use App\Http\Controllers\ClasseSubjectController;
 use App\Http\Controllers\ClasseTeacherController;
 use App\Http\Middleware\notAuth;
 
-Route::permanentRedirect('/', 'login')->name('home');
+Route::permanentRedirect('/', 'login')->name('root');
 
 // ******** Auth Routes ********
 Route::controller(AuthController::class)->group(function () {
@@ -31,7 +31,7 @@ Route::controller(AuthController::class)->group(function () {
 
 	Route::post('forgot-password', 'postForgotPassword');
 
-	Route::post('reset-password/{user:remember_token}', 'postResetPassword');
+	Route::patch('reset-password/{user:remember_token}', 'postResetPassword');
 });
 
 // ******** Routes Need Authentication ********
