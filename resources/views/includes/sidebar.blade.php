@@ -1,13 +1,12 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
 
-	<a class="brand-link" href="{{ route('dashboard') }}">
-		<img class="brand-image img-circle elevation-3" src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
-			style="opacity: .8" />
+	<a class="brand-link" href="{{ route('dashboard') }}" style="text-align: center; font-weight: bold; font-size: 24px">
+		<i class="fas fa-book-open" style="position: relative; top: 1px"></i>
 
 		<span class="brand-text">{{ config('app.name') }}</span>
 	</a>
 
-	<div class="sidebar">
+	<div class="sidebar" style="margin-top: 4rem">
 		<div class="user-panel d-flex mb-3 mt-3 pb-3">
 			<div class="image">
 				<img class="img-circle elevation-2" src="{{ asset('dist/img/user2-160x160.jpg') }}" alt="User Image" />
@@ -142,22 +141,6 @@
 						</a>
 					</li>
 				@endif
-
-				<li class="nav-item">
-					<a class="nav-link @if (request()->segment(1) == 'profile') active @endif" href="{{ route('profile') }}">
-						<i class="nav-icon fas fa-id-card"></i>
-
-						<p>My Profile</p>
-					</a>
-				</li>
-
-				<li class="nav-item">
-					<a class="nav-link @if (request()->segment(1) == 'change-password') active @endif" href="{{ route('change-password') }}">
-						<i class="nav-icon fas fa-key"></i>
-
-						<p>Change Password</p>
-					</a>
-				</li>
 
 			</ul>
 		</nav>

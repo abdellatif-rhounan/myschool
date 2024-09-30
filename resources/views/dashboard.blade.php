@@ -5,5 +5,5 @@
 @section('left_header', 'Dashboard')
 
 @section('page_content')
-	<div class="col-lg-12">Dashboard Content</div>
+	<div class="col-12">Dashboard Content</div>
 @endsection
