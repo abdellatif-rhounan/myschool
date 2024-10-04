@@ -5,7 +5,7 @@
 
 	Reset Your Password with This Button Below!
 
-	<x-mail::button url="{{ route('reset-password', $remember_token) }}">
+	<x-mail::button url="{{ route('reset-password', [$user_type, $remember_token]) }}">
 		Reset Password
 	</x-mail::button>
 

@@ -10,11 +10,13 @@ class ForgotPasswordMail extends Mailable
 {
     protected $name;
     protected $remember_token;
+    protected $user_type;
 
-    public function __construct($name, $remember_token)
+    public function __construct($name, $remember_token, $user_type)
     {
         $this->name = $name;
         $this->remember_token = $remember_token;
+        $this->user_type = $user_type;
     }
 
     public function envelope(): Envelope
@@ -31,6 +33,7 @@ class ForgotPasswordMail extends Mailable
             with: [
                 'name' => $this->name,
                 'remember_token' => $this->remember_token,
+                'user_type' => $this->user_type
             ],
         );
     }

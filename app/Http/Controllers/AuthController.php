@@ -2,69 +2,84 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
+use App\Enums\UserType;
+use App\Models\Frame;
+use App\Models\Student;
+use App\Models\Teacher;
+use App\Models\Tutor;
 use App\Mail\ForgotPasswordMail;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
-    public function login()
+    public function login(): View
     {
-        if (Auth::check()) {
-            return to_route('dashboard');
-        }
-
         return view('auth.login');
     }
 
-    public function authLogin(Request $request)
+    public function authenticate(Request $request): RedirectResponse
     {
         $request->validate([
-            'email' => 'required|email|max:50',
-            'password' => 'required|string|min:8|max:50'
+            'email' => ['required', 'email', 'max:50'],
+            'password' => ['required', 'string', 'min:4', 'max:50'],
+            'user-type' => ['required', Rule::enum(UserType::class)]
         ]);
 
-        if (Auth::attempt(
-            [
-                'email' => $request->email,
-                'password' => $request->password
-            ],
-            $request->boolean('remember')
-        )) {
-            return to_route('dashboard');
+        $remember = $request->boolean('remember');
+        $guard = $request->input('user-type');
+
+        if (Auth::guard($guard)->attempt($request->only('email', 'password'), $remember)) {
+            $request->session()->regenerate();
+
+            return to_route('dashboard.' . $guard);
         } else {
-            return redirect()->back()->with('error', 'Wrong Credentials');
+            return back()
+                ->with('error', 'Wrong Credentials')
+                ->onlyInput('email');
         }
     }
 
-    public function logout()
+    public function logout(Request $request): RedirectResponse
     {
         Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         return to_route('login');
     }
 
-    public function forgotPassword()
+    public function forgotPassword(): View
     {
         return view('auth.forgot_password');
     }
 
-    public function postForgotPassword(Request $request)
+    public function postForgotPassword(Request $request): RedirectResponse
     {
         $request->validate([
-            'email' => 'required|email|max:50',
+            'email' => ['required', 'email', 'max:50'],
+            'user-type' => ['required', Rule::enum(UserType::class)]
         ]);
 
-        $user = User::select('id', 'name', 'remember_token')
+        $guards = array_keys(config('auth.guards'));
+        array_shift($guards);
+
+        $models = [Frame::class, Teacher::class, Student::class, Tutor::class];
+        $pos = array_search($request->input('user-type'), $guards);
+
+        $user = $models[$pos]::select('id', 'name', 'remember_token')
             ->where('email', $request->email)
             ->first();
 
         if (!$user) {
-            return redirect()->back()->with('error', 'Email Not Found!');
+            return back()->with('error', 'Email Not Found!')->onlyInput('email');
         }
 
         $user->remember_token = Str::random(30);
@@ -73,22 +88,47 @@ class AuthController extends Controller
         Mail::to($request->email)
             ->send(new ForgotPasswordMail(
                 $user->name,
-                $user->remember_token
+                $user->remember_token,
+                $request->input('user-type'),
             ));
 
         return to_route('login')->with('success', 'Email Sent Successfully');
     }
 
-    public function resetPassword(User $user)
+    public function resetPassword(UserType $user_type, string $remember_token): View
     {
-        return view('auth.reset_password', ['remember_token' => $user->remember_token]);
+        $guards = array_keys(config('auth.guards'));
+        array_shift($guards);
+
+        $models = [Frame::class, Teacher::class, Student::class, Tutor::class];
+        $pos = array_search($user_type->value, $guards);
+
+        $user = $models[$pos]::select('id')
+            ->where('remember_token', $remember_token)
+            ->first();
+
+        if (!$user) abort(404);
+
+        return view('auth.reset_password', compact('remember_token'));
     }
 
-    public function postResetPassword(Request $request, User $user)
+    public function postResetPassword(Request $request, UserType $user_type, string $remember_token): RedirectResponse
     {
         $request->validate([
-            'password' => 'required|string|min:8|max:50|confirmed'
+            'password' => 'required|string|min:4|max:50|confirmed'
         ]);
+
+        $guards = array_keys(config('auth.guards'));
+        array_shift($guards);
+
+        $models = [Frame::class, Teacher::class, Student::class, Tutor::class];
+        $pos = array_search($user_type->value, $guards);
+
+        $user = $models[$pos]::select('id', 'password', 'remember_token')
+            ->where('remember_token', $remember_token)
+            ->first();
+
+        if (!$user) abort(404);
 
         $user->password = Hash::make($request->password);
         $user->remember_token = null;

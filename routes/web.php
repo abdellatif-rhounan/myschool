@@ -9,36 +9,40 @@ use App\Http\Controllers\ParentController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ClasseStudentController;
 use App\Http\Controllers\ClasseSubjectController;
 use App\Http\Controllers\ClasseTeacherController;
-use App\Http\Middleware\notAuth;
 
 Route::permanentRedirect('/', 'login')->name('root');
 
 // ******** Auth Routes ********
 Route::controller(AuthController::class)->group(function () {
-	Route::get('login', 'login')->name('login');
-	Route::post('login', 'authLogin');
 
-	Route::get('logout', 'logout')->name('logout');
+	Route::middleware('guest_user')->group(function () {
+		Route::get('login', 'login')->name('login');
+		Route::post('login', 'authenticate');
 
-	Route::middleware(notAuth::class)->group(function () {
 		Route::get('forgot-password', 'forgotPassword')->name('forgot-password');
+		Route::post('forgot-password', 'postForgotPassword');
 
-		Route::get('reset-password/{user:remember_token}', 'resetPassword')->name('reset-password');
+		Route::get('{user_type}/reset-password/{remember_token}', 'resetPassword')->name('reset-password');
+		Route::patch('{user_type}/reset-password/{remember_token}', 'postResetPassword');
 	});
 
-	Route::post('forgot-password', 'postForgotPassword');
+	Route::get('logout', 'logout')->name('logout')->middleware('auth_user');
+});
 
-	Route::patch('reset-password/{user:remember_token}', 'postResetPassword');
+// ******** Dashboard Routes ********
+Route::controller(DashboardController::class)->name('dashboard.')->group(function () {
+	Route::get('frame/dashboard', 'frame')->name('frame')->middleware('auth:frame');
+	Route::get('teacher/dashboard', 'teacher')->name('teacher')->middleware('auth:teacher');
+	Route::get('student/dashboard', 'student')->name('student')->middleware('auth:student');
+	Route::get('tutor/dashboard', 'tutor')->name('tutor')->middleware('auth:tutor');
 });
 
 // ******** Routes Need Authentication ********
 Route::middleware('auth')->group(function () {
-	// ******** Dashboard Route ********
-	Route::view('dashboard', 'dashboard')->name('dashboard');
-
 	// ******** Resources Routes ********
 	// Admin Related Routes
 	Route::resource('admins', AdminController::class)->middleware('role_user:admin');
