@@ -35,10 +35,10 @@
 		@enderror
 	</div>
 
-	<div class="form-group mb-4">
+	<div class="form-group mb-3">
 		<label style="font-size: 17px">User Type:</label>
 
-		<div class="row px-3" style="width: 100%; margin: 0 auto;">
+		<div class="row px-3" style="width: 100%; margin: 0 auto">
 			<div class="col-6 custom-control custom-radio">
 				<input class="custom-control-input" id="user-student" name="user-type" type="radio" value="student" checked />
 				<label class="custom-control-label" for="user-student">Student</label>

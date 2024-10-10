@@ -3,10 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Enums\UserType;
-use App\Models\Frame;
-use App\Models\Student;
-use App\Models\Teacher;
-use App\Models\Tutor;
 use App\Mail\ForgotPasswordMail;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -68,13 +64,7 @@ class AuthController extends Controller
             'user-type' => ['required', Rule::enum(UserType::class)]
         ]);
 
-        $guards = array_keys(config('auth.guards'));
-        array_shift($guards);
-
-        $models = [Frame::class, Teacher::class, Student::class, Tutor::class];
-        $pos = array_search($request->input('user-type'), $guards);
-
-        $user = $models[$pos]::select('id', 'name', 'remember_token')
+        $user = rightModel($request->input('user-type'))::select('id', 'name', 'remember_token')
             ->where('email', $request->email)
             ->first();
 
@@ -89,7 +79,7 @@ class AuthController extends Controller
             ->send(new ForgotPasswordMail(
                 $user->name,
                 $user->remember_token,
-                $request->input('user-type'),
+                $request->input('user-type')
             ));
 
         return to_route('login')->with('success', 'Email Sent Successfully');
@@ -97,13 +87,7 @@ class AuthController extends Controller
 
     public function resetPassword(UserType $user_type, string $remember_token): View
     {
-        $guards = array_keys(config('auth.guards'));
-        array_shift($guards);
-
-        $models = [Frame::class, Teacher::class, Student::class, Tutor::class];
-        $pos = array_search($user_type->value, $guards);
-
-        $user = $models[$pos]::select('id')
+        $user = rightModel($user_type->value)::select('id')
             ->where('remember_token', $remember_token)
             ->first();
 
@@ -115,16 +99,10 @@ class AuthController extends Controller
     public function postResetPassword(Request $request, UserType $user_type, string $remember_token): RedirectResponse
     {
         $request->validate([
-            'password' => 'required|string|min:4|max:50|confirmed'
+            'password' => ['required', 'string', 'min:4', 'max:50', 'confirmed']
         ]);
 
-        $guards = array_keys(config('auth.guards'));
-        array_shift($guards);
-
-        $models = [Frame::class, Teacher::class, Student::class, Tutor::class];
-        $pos = array_search($user_type->value, $guards);
-
-        $user = $models[$pos]::select('id', 'password', 'remember_token')
+        $user = rightModel($user_type->value)::select('id', 'password', 'remember_token')
             ->where('remember_token', $remember_token)
             ->first();
 
