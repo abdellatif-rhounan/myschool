@@ -34,7 +34,7 @@ class AuthController extends Controller
         if (Auth::guard($guard)->attempt($request->only('email', 'password'), $remember)) {
             $request->session()->regenerate();
 
-            return to_route('dashboard.' . $guard);
+            return to_route('dashboard');
         } else {
             return back()
                 ->with('error', 'Wrong Credentials')
@@ -89,9 +89,7 @@ class AuthController extends Controller
     {
         $user = rightModel($user_type->value)::select('id')
             ->where('remember_token', $remember_token)
-            ->first();
-
-        if (!$user) abort(404);
+            ->firstOrFail();
 
         return view('auth.reset_password', compact('remember_token'));
     }
@@ -104,9 +102,7 @@ class AuthController extends Controller
 
         $user = rightModel($user_type->value)::select('id', 'password', 'remember_token')
             ->where('remember_token', $remember_token)
-            ->first();
-
-        if (!$user) abort(404);
+            ->firstOrFail();
 
         $user->password = Hash::make($request->password);
         $user->remember_token = null;

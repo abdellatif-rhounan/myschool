@@ -33,13 +33,8 @@ Route::controller(AuthController::class)->group(function () {
 	Route::get('logout', 'logout')->name('logout')->middleware('auth_user');
 });
 
-// ******** Dashboard Routes ********
-Route::controller(DashboardController::class)->name('dashboard.')->group(function () {
-	Route::get('frame/dashboard', 'frame')->name('frame')->middleware('auth:frame');
-	Route::get('teacher/dashboard', 'teacher')->name('teacher')->middleware('auth:teacher');
-	Route::get('student/dashboard', 'student')->name('student')->middleware('auth:student');
-	Route::get('tutor/dashboard', 'tutor')->name('tutor')->middleware('auth:tutor');
-});
+// ******** Dashboard Route ********
+Route::get('dashboard', DashboardController::class)->name('dashboard');
 
 // ******** Routes Need Authentication ********
 Route::middleware('auth')->group(function () {

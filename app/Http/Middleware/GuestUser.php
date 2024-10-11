@@ -11,11 +11,10 @@ class GuestUser
 {
     public function handle(Request $request, Closure $next): Response
     {
-        $guards = array_keys(config('auth.guards'));
-        array_shift($guards);
+        $guards = ['frame', 'teacher', 'student', 'tutor'];
 
         foreach ($guards as $guard) {
-            if (Auth::guard($guard)->check()) return to_route('dashboard.' . $guard);
+            if (Auth::guard($guard)->check()) return to_route('dashboard');
         }
 
         return $next($request);

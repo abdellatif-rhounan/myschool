@@ -2,21 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
+
 class DashboardController extends Controller
 {
-    public function frame() {
-        return view('frames.dashboard');
-    }
+    public function __invoke()
+    {
+        $guards = ['frame', 'teacher', 'student', 'tutor'];
 
-    public function teacher() {
-        return view('teachers.dashboard');
-    }
+        foreach ($guards as $guard) {
+            if (Auth::guard($guard)->check()) return view($guard . 's.dashboard');
+        }
 
-    public function student() {
-        return view('students.dashboard');
-    }
-
-    public function tutor() {
-        return view('tutors.dashboard');
+        return to_route('login');
     }
 }
