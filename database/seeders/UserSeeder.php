@@ -13,10 +13,28 @@ class UserSeeder extends Seeder
             'firstname' => 'super',
             'lastname' => 'admin',
             'email' => 'superadmin@test.com',
-            'gender' => 'Male',
             'role' => 1,
         ]);
 
-        User::factory(100)->create();
+        User::factory()->create([
+            'firstname' => 'Mr',
+            'lastname' => 'teacher',
+            'email' => 'teacher@test.com',
+            'role' => 2,
+        ]);
+
+        User::factory()->create([
+            'firstname' => 'Mr',
+            'lastname' => 'student',
+            'email' => 'student@test.com',
+            'role' => 3,
+        ]);
+
+        User::factory()->create([
+            'firstname' => 'Mr',
+            'lastname' => 'guardian',
+            'email' => 'guardian@test.com',
+            'role' => 4,
+        ]);
     }
 }
