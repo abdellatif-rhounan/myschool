@@ -28,7 +28,17 @@ class AuthController extends Controller
 
         if (Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
             $request->session()->regenerate();
-            return to_route('dashboard');
+
+            switch (Auth::user()->role) {
+                case 1:
+                    return to_route('dashboard.admin');
+                case 2:
+                    return to_route('dashboard.teacher');
+                case 3:
+                    return to_route('dashboard.student');
+                case 4:
+                    return to_route('dashboard.guardian');
+            }
         }
 
         return back()->withErrors(['fail' => 'Wrong Credentials'])->onlyInput('email');
