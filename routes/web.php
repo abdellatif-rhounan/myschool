@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
+use App\Enums\Role;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 
 Route::permanentRedirect('/', 'login')->name('root');
@@ -28,4 +31,9 @@ Route::middleware('auth')->name('dashboard.')->group(function () {
     Route::view('teacher/dashboard', 'teacher.dashboard')->middleware('userRole:2')->name('teacher');
     Route::view('student/dashboard', 'student.dashboard')->middleware('userRole:3')->name('student');
     Route::view('guardian/dashboard', 'guardian.dashboard')->middleware('userRole:4')->name('guardian');
+});
+
+// ******** Resources Routes ********
+Route::middleware(['auth', 'userRole:' . Role::ADMIN->value])->group(function () {
+    Route::resource('admins', AdminController::class);
 });

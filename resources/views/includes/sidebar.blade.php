@@ -22,7 +22,7 @@
 		<nav class="mt-2">
 			<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" data-accordion="false" role="menu">
 				<li class="nav-item">
-					<a class="nav-link @if (request()->segment(2) == 'dashboard') active @endif" href='{{ route("dashboard.{$role}") }}'>
+					<a class="nav-link @if (request()->segment(2) === 'dashboard') active @endif" href='{{ route("dashboard.{$role}") }}'>
 						<i class="nav-icon fas fa-tachometer-alt"></i>
 
 						<p>Dashboard</p>

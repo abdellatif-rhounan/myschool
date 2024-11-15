@@ -11,6 +11,7 @@
 	<link href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}" rel="stylesheet" />
 	<link href="{{ asset('dist/css/adminlte.min.css') }}" rel="stylesheet" />
 	@vite('resources/css/app.css')
+	@stack('css')
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed">
