@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Enums\Role;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 
 Route::permanentRedirect('/', 'login')->name('root');
@@ -39,5 +40,6 @@ Route::middleware(['auth', 'userRole:' . Role::ADMIN->value])->group(function ()
     Route::resources([
         'admins' => AdminController::class,
         'teachers' => TeacherController::class,
+        'students' => StudentController::class,
     ]);
 });

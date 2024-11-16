@@ -20,4 +20,12 @@
 			<p>Teachers</p>
 		</a>
 	</li>
+
+	<li class="nav-item">
+		<a class="nav-link @if (request()->segment(1) === 'students') active @endif" href="{{ route('students.index') }}">
+			<i class="nav-icon fas fa-user-graduate"></i>
+
+			<p>Students</p>
+		</a>
+	</li>
 @endsection
