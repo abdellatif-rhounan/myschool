@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Enums\Role;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 
@@ -41,5 +42,6 @@ Route::middleware(['auth', 'userRole:' . Role::ADMIN->value])->group(function ()
         'admins' => AdminController::class,
         'teachers' => TeacherController::class,
         'students' => StudentController::class,
+        'guardians' => GuardianController::class,
     ]);
 });
