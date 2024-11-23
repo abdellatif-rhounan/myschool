@@ -46,16 +46,16 @@
 
 					<span class="ml-2">
 						@switch($admin->status)
-							@case(\App\Enums\UserStatus::Active->value)
-								<span class="badge badge-success">{{ \App\Enums\UserStatus::Active->name }}</span>
+							@case(\App\Enums\UserStatus::ACTIVE->value)
+								<span class="badge badge-success">{{ \App\Enums\UserStatus::ACTIVE->name }}</span>
 							@break
 
-							@case(\App\Enums\UserStatus::Vacation->value)
-								<span class="badge badge-primary">{{ \App\Enums\UserStatus::Vacation->name }}</span>
+							@case(\App\Enums\UserStatus::VACATION->value)
+								<span class="badge badge-primary">{{ \App\Enums\UserStatus::VACATION->name }}</span>
 							@break
 
-							@case(\App\Enums\UserStatus::Stopped->value)
-								<span class="badge badge-danger">{{ \App\Enums\UserStatus::Stopped->name }}</span>
+							@case(\App\Enums\UserStatus::STOPPED->value)
+								<span class="badge badge-danger">{{ \App\Enums\UserStatus::STOPPED->name }}</span>
 							@break
 						@endswitch
 					</span>

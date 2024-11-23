@@ -78,7 +78,7 @@
 
 						<select class="custom-select" id="status" name="status">
 							<option value="">-- select status --</option>
-							@foreach (array_filter(\App\Enums\UserStatus::cases(), fn($case) => $case !== \App\Enums\UserStatus::Vacation) as $status)
+							@foreach (array_filter(\App\Enums\UserStatus::cases(), fn($case) => $case !== \App\Enums\UserStatus::VACATION) as $status)
 								<option value="{{ $status->value }}" {{ Request::get('status') == $status->value ? 'selected' : '' }}>
 									{{ $status->name }}
 								</option>
@@ -214,11 +214,11 @@
 
 						<td>
 							@switch($guardian->gender)
-								@case(\App\Enums\Gender::Male->value)
+								@case(\App\Enums\Gender::MALE->value)
 									<i class="fas fa-male" style="margin-left: 12px; font-size: 30px; color: #1c71d8;"></i>
 								@break
 
-								@case(\App\Enums\Gender::Female->value)
+								@case(\App\Enums\Gender::FEMALE->value)
 									<i class="fas fa-female" style="margin-left: 10px; font-size: 30px; color: #e72dcf;"></i>
 								@break
 							@endswitch
@@ -226,11 +226,11 @@
 
 						<td>
 							@switch($guardian->status)
-								@case(\App\Enums\UserStatus::Active->value)
+								@case(\App\Enums\UserStatus::ACTIVE->value)
 									<span class="badge badge-success">Active</span>
 								@break
 
-								@case(\App\Enums\UserStatus::Stopped->value)
+								@case(\App\Enums\UserStatus::STOPPED->value)
 									<span class="badge badge-danger">Stopped</span>
 								@break
 							@endswitch

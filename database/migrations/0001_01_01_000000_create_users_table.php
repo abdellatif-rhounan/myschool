@@ -16,7 +16,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('gender', 6);                    // match Enum values
-            $table->enum('role', [1, 2, 3, 4]);             // match Enum values
+            $table->tinyInteger('role');                    // match Enum values
             $table->tinyInteger('status')->default(1);      // match Enum Values
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
             $table->rememberToken();

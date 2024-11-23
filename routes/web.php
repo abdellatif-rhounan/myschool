@@ -30,10 +30,10 @@ Route::controller(AuthController::class)->group(function () {
 
 // Dashboard Routes
 Route::middleware('auth')->name('dashboard.')->group(function () {
-    Route::view('admin/dashboard', 'admin.dashboard')->middleware('userRole:1')->name('admin');
-    Route::view('teacher/dashboard', 'teacher.dashboard')->middleware('userRole:2')->name('teacher');
-    Route::view('student/dashboard', 'student.dashboard')->middleware('userRole:3')->name('student');
-    Route::view('guardian/dashboard', 'guardian.dashboard')->middleware('userRole:4')->name('guardian');
+    Route::view('admin/dashboard', 'admin.dashboard')->middleware('userRole:' . Role::ADMIN->value)->name('admin');
+    Route::view('teacher/dashboard', 'teacher.dashboard')->middleware('userRole:' . Role::TEACHER->value)->name('teacher');
+    Route::view('student/dashboard', 'student.dashboard')->middleware('userRole:' . Role::STUDENT->value)->name('student');
+    Route::view('guardian/dashboard', 'guardian.dashboard')->middleware('userRole:' . Role::GUARDIAN->value)->name('guardian');
 });
 
 // ******** Resources Routes ********

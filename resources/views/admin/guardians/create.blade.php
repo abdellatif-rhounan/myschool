@@ -99,7 +99,7 @@
 
 							<select class="custom-select @error('status') is-invalid @enderror" id="status" name="status">
 								<option value="">-- select status --</option>
-								@foreach (array_filter(\App\Enums\UserStatus::cases(), fn($case) => $case !== \App\Enums\UserStatus::Vacation) as $status)
+								@foreach (array_filter(\App\Enums\UserStatus::cases(), fn($case) => $case !== \App\Enums\UserStatus::VACATION) as $status)
 									<option value="{{ $status->value }}" {{ old('status') == $status->value ? 'selected' : '' }}>
 										{{ $status->name }}
 									</option>

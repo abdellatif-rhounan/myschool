@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
+use Illuminate\View\View;
 
 use App\Enums\Gender;
 use App\Enums\Role;
@@ -87,7 +87,7 @@ class GuardianController extends Controller
                 Rule::in(
                     array_map(
                         fn($case) => $case->value,
-                        array_filter(UserStatus::cases(), fn($case) => $case !== UserStatus::Vacation)
+                        array_filter(UserStatus::cases(), fn($case) => $case !== UserStatus::VACATION)
                     )
                 ),
             ],
@@ -138,7 +138,7 @@ class GuardianController extends Controller
                 Rule::in(
                     array_map(
                         fn($case) => $case->value,
-                        array_filter(UserStatus::cases(), fn($case) => $case !== UserStatus::Vacation)
+                        array_filter(UserStatus::cases(), fn($case) => $case !== UserStatus::VACATION)
                     )
                 ),
             ],

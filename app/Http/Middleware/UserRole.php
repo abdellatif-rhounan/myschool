@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UserRole
 {
-    public function handle(Request $request, Closure $next, string $role): Response
+    public function handle(Request $request, Closure $next, int $role): Response
     {
         if (Auth::user()->role !== $role) abort(401);
 
