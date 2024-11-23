@@ -1,5 +1,9 @@
 @extends('admin.layouts.admin_layout')
 
+@php
+	use App\Enums\UserStatus;
+@endphp
+
 @section('title')
 	{{ $admin->firstname }} {{ $admin->lastname }} Profile
 @endsection
@@ -46,16 +50,16 @@
 
 					<span class="ml-2">
 						@switch($admin->status)
-							@case(\App\Enums\UserStatus::ACTIVE->value)
-								<span class="badge badge-success">{{ \App\Enums\UserStatus::ACTIVE->name }}</span>
+							@case(UserStatus::ACTIVE->value)
+								<span class="badge badge-success">Active</span>
 							@break
 
-							@case(\App\Enums\UserStatus::VACATION->value)
-								<span class="badge badge-primary">{{ \App\Enums\UserStatus::VACATION->name }}</span>
+							@case(UserStatus::VACATION->value)
+								<span class="badge badge-primary">Vacation</span>
 							@break
 
-							@case(\App\Enums\UserStatus::STOPPED->value)
-								<span class="badge badge-danger">{{ \App\Enums\UserStatus::STOPPED->name }}</span>
+							@case(UserStatus::STOPPED->value)
+								<span class="badge badge-danger">Stopped</span>
 							@break
 						@endswitch
 					</span>

@@ -1,5 +1,10 @@
 @extends('admin.layouts.admin_layout')
 
+@php
+	use App\Enums\Gender;
+	use App\Enums\UserStatus;
+@endphp
+
 @section('title', 'Teachers List')
 
 @push('css')
@@ -63,9 +68,9 @@
 
 						<select class="custom-select" id="gender" name="gender">
 							<option value="">-- select gender --</option>
-							@foreach (\App\Enums\Gender::cases() as $gender)
+							@foreach (Gender::cases() as $gender)
 								<option value="{{ $gender->value }}" {{ Request::get('gender') == $gender->value ? 'selected' : '' }}>
-									{{ $gender->name }}
+									{{ ucfirst($gender->value) }}
 								</option>
 							@endforeach
 						</select>
@@ -78,9 +83,9 @@
 
 						<select class="custom-select" id="status" name="status">
 							<option value="">-- select status --</option>
-							@foreach (\App\Enums\UserStatus::cases() as $status)
+							@foreach (UserStatus::cases() as $status)
 								<option value="{{ $status->value }}" {{ Request::get('status') == $status->value ? 'selected' : '' }}>
-									{{ $status->name }}
+									{{ ucfirst(strtolower($status->name)) }}
 								</option>
 							@endforeach
 						</select>
@@ -214,11 +219,11 @@
 
 						<td>
 							@switch($teacher->gender)
-								@case(\App\Enums\Gender::MALE->value)
+								@case(Gender::MALE->value)
 									<i class="fas fa-male" style="margin-left: 12px; font-size: 30px; color: #1c71d8;"></i>
 								@break
 
-								@case(\App\Enums\Gender::FEMALE->value)
+								@case(Gender::FEMALE->value)
 									<i class="fas fa-female" style="margin-left: 10px; font-size: 30px; color: #e72dcf;"></i>
 								@break
 							@endswitch
@@ -226,15 +231,15 @@
 
 						<td>
 							@switch($teacher->status)
-								@case(\App\Enums\UserStatus::ACTIVE->value)
+								@case(UserStatus::ACTIVE->value)
 									<span class="badge badge-success">Active</span>
 								@break
 
-								@case(\App\Enums\UserStatus::VACATION->value)
+								@case(UserStatus::VACATION->value)
 									<span class="badge badge-primary">Vacation</span>
 								@break
 
-								@case(\App\Enums\UserStatus::STOPPED->value)
+								@case(UserStatus::STOPPED->value)
 									<span class="badge badge-danger">Stopped</span>
 								@break
 							@endswitch

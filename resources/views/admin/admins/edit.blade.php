@@ -85,7 +85,7 @@
 								<option value="">-- select gender --</option>
 								@foreach (\App\Enums\Gender::cases() as $gender)
 									<option value="{{ $gender->value }}" {{ old('gender', $admin->gender) == $gender->value ? 'selected' : '' }}>
-										{{ $gender->name }}
+										{{ ucfirst($gender->value) }}
 									</option>
 								@endforeach
 							</select>
@@ -102,7 +102,7 @@
 								<option value="">-- select status --</option>
 								@foreach (\App\Enums\UserStatus::cases() as $status)
 									<option value="{{ $status->value }}" {{ old('status', $admin->status) == $status->value ? 'selected' : '' }}>
-										{{ $status->name }}
+										{{ ucfirst(strtolower($status->name)) }}
 									</option>
 								@endforeach
 							</select>

@@ -1,5 +1,9 @@
 @extends('admin.layouts.admin_layout')
 
+@php
+	use App\Enums\UserStatus;
+@endphp
+
 @section('title', 'Create Guardian')
 
 @section('left_main_header', 'Create Guardian')
@@ -84,7 +88,7 @@
 								<option value="">-- select gender --</option>
 								@foreach (\App\Enums\Gender::cases() as $gender)
 									<option value="{{ $gender->value }}" {{ old('gender') == $gender->value ? 'selected' : '' }}>
-										{{ $gender->name }}
+										{{ ucfirst($gender->value) }}
 									</option>
 								@endforeach
 							</select>
@@ -99,9 +103,9 @@
 
 							<select class="custom-select @error('status') is-invalid @enderror" id="status" name="status">
 								<option value="">-- select status --</option>
-								@foreach (array_filter(\App\Enums\UserStatus::cases(), fn($case) => $case !== \App\Enums\UserStatus::VACATION) as $status)
+								@foreach (array_filter(UserStatus::cases(), fn($case) => $case !== UserStatus::VACATION) as $status)
 									<option value="{{ $status->value }}" {{ old('status') == $status->value ? 'selected' : '' }}>
-										{{ $status->name }}
+										{{ ucfirst(strtolower($status->name)) }}
 									</option>
 								@endforeach
 							</select>
