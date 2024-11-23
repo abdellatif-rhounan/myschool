@@ -9,8 +9,10 @@ class StudentSeeder extends Seeder
 {
     public function run(): void
     {
-        User::factory(200)->create([
-            'role' => 3,
-        ]);
+        User::factory(200)
+            ->activeStoppedStatus()
+            ->create([
+                'role' => 3,
+            ]);
     }
 }

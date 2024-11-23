@@ -9,8 +9,10 @@ class GuardianSeeder extends Seeder
 {
     public function run(): void
     {
-        User::factory(100)->create([
-            'role' => 4,
-        ]);
+        User::factory(100)
+            ->activeStoppedStatus()
+            ->create([
+                'role' => 4,
+            ]);
     }
 }

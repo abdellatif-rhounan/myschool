@@ -32,4 +32,11 @@ class UserFactory extends Factory
             'email_verified_at' => null,
         ]);
     }
+
+    public function activeStoppedStatus(): static
+    {
+        return $this->state(fn(array $attributes) => [
+            'status' => fake()->randomElement([1, 3]),
+        ]);
+    }
 }

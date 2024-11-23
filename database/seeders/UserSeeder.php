@@ -14,6 +14,7 @@ class UserSeeder extends Seeder
             'lastname' => 'admin',
             'email' => 'admin@test.com',
             'role' => 1,
+            'status' => 1,
         ]);
 
         User::factory()->create([
@@ -21,6 +22,7 @@ class UserSeeder extends Seeder
             'lastname' => 'teacher',
             'email' => 'teacher@test.com',
             'role' => 2,
+            'status' => 1,
         ]);
 
         User::factory()->create([
@@ -28,6 +30,7 @@ class UserSeeder extends Seeder
             'lastname' => 'student',
             'email' => 'student@test.com',
             'role' => 3,
+            'status' => 1,
         ]);
 
         User::factory()->create([
@@ -35,6 +38,7 @@ class UserSeeder extends Seeder
             'lastname' => 'guardian',
             'email' => 'guardian@test.com',
             'role' => 4,
+            'status' => 1,
         ]);
     }
 }
