@@ -38,10 +38,19 @@ Route::middleware('auth')->name('dashboard.')->group(function () {
 
 // ******** Resources Routes ********
 Route::middleware(['auth', 'userRole:' . Role::ADMIN->value])->group(function () {
-    Route::resources([
-        'admins' => AdminController::class,
-        'teachers' => TeacherController::class,
-        'students' => StudentController::class,
-        'guardians' => GuardianController::class,
+    Route::resource('admins', AdminController::class)->parameters([
+        'admins' => 'user',
+    ]);
+
+    Route::resource('teachers', TeacherController::class)->parameters([
+        'teachers' => 'user',
+    ]);
+
+    Route::resource('students', StudentController::class)->parameters([
+        'students' => 'user',
+    ]);
+
+    Route::resource('guardians', GuardianController::class)->parameters([
+        'guardians' => 'user',
     ]);
 });

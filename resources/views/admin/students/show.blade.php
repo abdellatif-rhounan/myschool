@@ -5,11 +5,11 @@
 @endphp
 
 @section('title')
-	{{ $student->firstname }} {{ $student->lastname }} Profile
+	{{ $user->firstname }} {{ $user->lastname }} Profile
 @endsection
 
 @section('left_main_header')
-	{{ $student->firstname }} {{ $student->lastname }} Profile
+	{{ $user->firstname }} {{ $user->lastname }} Profile
 @endsection
 
 @section('right_main_header')
@@ -21,35 +21,35 @@
 		<div class="card card-success">
 
 			<div class="card-header">
-				<h3 class="card-title">{{ $student->firstname }} {{ $student->lastname }} Profile</h3>
+				<h3 class="card-title">{{ $user->firstname }} {{ $user->lastname }} Profile</h3>
 			</div>
 
 			<div class="card-body">
 				<div>
 					<label for="firstname">Firstname :</label>
-					<span class="ml-2">{{ $student->firstname }}</span>
+					<span class="ml-2">{{ $user->firstname }}</span>
 				</div>
 
 				<div>
 					<label for="lastname">Lastname :</label>
-					<span class="ml-2">{{ $student->lastname }}</span>
+					<span class="ml-2">{{ $user->lastname }}</span>
 				</div>
 
 				<div>
 					<label for="email">Email :</label>
-					<span class="ml-2">{{ $student->email }}</span>
+					<span class="ml-2">{{ $user->email }}</span>
 				</div>
 
 				<div>
 					<label for="gender">Gender :</label>
-					<span class="text-capitalize ml-2">{{ $student->gender }}</span>
+					<span class="text-capitalize ml-2">{{ $user->gender }}</span>
 				</div>
 
 				<div>
 					<label for="status">Status :</label>
 
 					<span class="ml-2">
-						@switch($student->status)
+						@switch($user->status)
 							@case(UserStatus::ACTIVE->value)
 								<span class="badge badge-success">Active</span>
 							@break
@@ -63,7 +63,7 @@
 
 				<div>
 					<label for="created_by">Created By :</label>
-					<span class="ml-2">{{ $student->creator->firstname }} {{ $student->creator->lastname }}</span>
+					<span class="ml-2">{{ $user->creator->firstname }} {{ $user->creator->lastname }}</span>
 				</div>
 			</div>
 

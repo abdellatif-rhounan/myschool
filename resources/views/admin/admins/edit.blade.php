@@ -16,7 +16,7 @@
 				<h3 class="card-title">Edit Admin</h3>
 			</div>
 
-			<form method="post" action="{{ route('admins.update', $admin->id) }}">
+			<form method="post" action="{{ route('admins.update', $user->id) }}">
 				@csrf
 				@method('PUT')
 
@@ -27,7 +27,7 @@
 							<label for="firstname">Firstname</label>
 
 							<input class="form-control @error('firstname') is-invalid @enderror" id="firstname" name="firstname" type="text"
-								value="{{ old('firstname', $admin->firstname) }}" placeholder="Firstname" />
+								value="{{ old('firstname', $user->firstname) }}" placeholder="Firstname" />
 
 							@error('firstname')
 								<div class="invalid-feedback">{{ $message }}</div>
@@ -38,7 +38,7 @@
 							<label for="lastname">Lastname</label>
 
 							<input class="form-control @error('lastname') is-invalid @enderror" id="lastname" name="lastname" type="text"
-								value="{{ old('lastname', $admin->lastname) }}" placeholder="Lastname" />
+								value="{{ old('lastname', $user->lastname) }}" placeholder="Lastname" />
 
 							@error('lastname')
 								<div class="invalid-feedback">{{ $message }}</div>
@@ -50,7 +50,7 @@
 						<label for="email">Email</label>
 
 						<input class="form-control @error('email') is-invalid @enderror" id="email" name="email" type="email"
-							value="{{ old('email', $admin->email) }}" placeholder="Email" />
+							value="{{ old('email', $user->email) }}" placeholder="Email" />
 
 						@error('email')
 							<div class="invalid-feedback">{{ $message }}</div>
@@ -84,7 +84,7 @@
 							<select class="custom-select @error('gender') is-invalid @enderror" id="gender" name="gender">
 								<option value="">-- select gender --</option>
 								@foreach (\App\Enums\Gender::cases() as $gender)
-									<option value="{{ $gender->value }}" {{ old('gender', $admin->gender) == $gender->value ? 'selected' : '' }}>
+									<option value="{{ $gender->value }}" {{ old('gender', $user->gender) == $gender->value ? 'selected' : '' }}>
 										{{ ucfirst($gender->value) }}
 									</option>
 								@endforeach
@@ -101,7 +101,7 @@
 							<select class="custom-select @error('status') is-invalid @enderror" id="status" name="status">
 								<option value="">-- select status --</option>
 								@foreach (\App\Enums\UserStatus::cases() as $status)
-									<option value="{{ $status->value }}" {{ old('status', $admin->status) == $status->value ? 'selected' : '' }}>
+									<option value="{{ $status->value }}" {{ old('status', $user->status) == $status->value ? 'selected' : '' }}>
 										{{ ucfirst(strtolower($status->name)) }}
 									</option>
 								@endforeach
